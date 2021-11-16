@@ -31,6 +31,7 @@ import { SyncSdkQcsButtonComponent } from './filter/sync-sdk-qcs-button/sync-sdk
 import { SyncQcsQerButtonComponent } from './filter/sync-qcs-qer-button/sync-qcs-qer-button.component';
 import { IndexComponent } from './index/index.component';
 import { LanguageGraphComponent } from './language-graph/language-graph.component';
+import {TableComponent} from './generictable/table.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { LanguageGraphComponent } from './language-graph/language-graph.componen
     SyncSdkQcsButtonComponent,
     SyncQcsQerButtonComponent,
     IndexComponent,
-    LanguageGraphComponent
+    LanguageGraphComponent,
+    TableComponent
   ],
   imports: [
     AppRoutingModule,

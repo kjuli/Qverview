@@ -1,13 +1,18 @@
 <div id="filter-wrapper">
-  <div class="filter-title">
-    <mat-form-field id="search">
-      <mat-label>Search all</mat-label>
-      <input matInput (keyup)="searchAll($event)" placeholder="Search" #input>
-    </mat-form-field>
+  <div class="filter-title-wrapper">
+    <div class="filter-title">
+      <mat-form-field id="search">
+        <mat-label>Search all</mat-label>
+        <input matInput (keyup)="searchAll($event)" placeholder="Search" #input>
+      </mat-form-field>
+    </div>
   </div>
 
-  <div class="filter-title">
-    Interoperability
+
+  <div class="filter-title-wrapper">
+    <div class="filter-title">
+      Interoperability
+    </div>
   </div>
   <mat-card>
     <div id="interoperability">
@@ -19,7 +24,40 @@
     </div>
   </mat-card>
 
-  <div id="filter-title-wrapper">
+  <div class="filter-title-wrapper">
+    <div class="filter-title">
+      Tables
+    </div>
+    <div>
+      <span>Show/Hide tables</span>
+    </div>
+  </div>
+  <mat-card>
+    <div id="tables">
+      <ul style="list-style: none">
+        <li>
+          <mat-checkbox [(ngModel)]="showSdkTable" (ngModelChange)="updateShowTable()">SDK</mat-checkbox>
+        </li>
+        <li>
+          <mat-checkbox [(ngModel)]="showQCSTable" (ngModelChange)="updateShowTable()">Quantum Cloud Services</mat-checkbox>
+        </li>
+        <li>
+          <mat-checkbox [(ngModel)]="showQERTable" (ngModelChange)="updateShowTable()">Quantum Execution Resources</mat-checkbox>
+        </li>
+        <li>
+          <mat-checkbox [(ngModel)]="showPLTable" (ngModelChange)="updateShowTable()">Programming Languages</mat-checkbox>
+        </li>
+        <li>
+          <mat-checkbox [(ngModel)]="showCompilerTable" (ngModelChange)="updateShowTable()">Compiler &amp; Transpilers</mat-checkbox>
+        </li>
+        <li>
+          <mat-checkbox [(ngModel)]="showOTable" (ngModelChange)="updateShowTable()">Orchastrators</mat-checkbox>
+        </li>
+      </ul>
+    </div>
+  </mat-card>
+
+  <div class="filter-title-wrapper">
     <div class="filter-title">
       Filter
     </div>

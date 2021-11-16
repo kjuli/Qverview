@@ -1,7 +1,7 @@
-<div *ngIf="dataSource" class="table-wrapper mat-elevation-z2">
+<!--<div *ngIf="dataSource" [hidden]="!showSdkTable" class="table-wrapper mat-elevation-z2">
   <table mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="name" [sticky]="true">
-      <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">Software Development Kits</th>
+      <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2"><strong>Software Development Kits</strong></th>
       <td mat-cell *matCellDef="let sdk">
         <div class="button-in-table">{{sdk.name}}</div>
       </td>
@@ -69,4 +69,11 @@
         *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 
-</div>
+  <mat-paginator #sdkPaginator
+                 [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Select page of SDK elements">
+  </mat-paginator>
+
+</div>-->
+<app-quantum-table [tableDefinition]="sdkTableModel"></app-quantum-table>

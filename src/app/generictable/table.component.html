@@ -1,0 +1,23 @@
+<div *ngIf="dataSource" [hidden]="hideTable" class="table-wrapper mat-elevation-z2">
+  <table mat-table [dataSource]="dataSource">
+    <ng-container *ngFor="let column of tableDefinition.columns" [matColumnDef]="column.name">
+      <th mat-header-cell *matHeaderCellDef>
+        <span *ngIf="column.label; else standardName">{{column.label}}</span>
+        <ng-template #standardName><span>{{convertCamelCaseToSentence(column.name)}}</span></ng-template>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <div class="element-in-table" (click)="tableDefinition.onCell(row, column)"
+             [innerHTML]="tableDefinition.onCell(row, column)">
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnNames; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
+  </table>
+
+  <mat-paginator #paginator
+                 [pageSizeOptions]="pageSizeOptions"
+                 showFirstLastButtons>
+  </mat-paginator>
+</div>

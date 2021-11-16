@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { QuantumExecutionResourceService } from '../quantum-execution-resource.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { FilterService } from '../../filter/filter.service';
+import {BaseTableModel} from '../../generictable/table.model';
+import {QuantumExecutionResource} from '../quantum-execution-resource.model';
 
 @Component({
   selector: 'app-quantum-computation-resources-table',
@@ -11,22 +13,25 @@ import { FilterService } from '../../filter/filter.service';
 export class QuantumExecutionResourcesTableComponent implements OnInit {
 
   dataSource;
-  displayedColumns = [
-    'name',
-    'executionType',
-    'computationModel',
-    'vendor'
-  ];
+  qerTableModel: QerTableModel;
 
   constructor(private quantumExecutionResourceService: QuantumExecutionResourceService, private filterService: FilterService) {
   }
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource(this.quantumExecutionResourceService.getAllQuantumExecutionResources());
-    this.filterService.qerFilterEvent$.subscribe(qer => this.dataSource = qer);
+    this.qerTableModel = new QerTableModel(this.dataSource);
+    this.filterService.qerFilterEvent$.subscribe(qer => {
+      this.dataSource = new MatTableDataSource(qer);
+      this.qerTableModel.dataSource.next(this.dataSource);
+    });
 
     this.filterService.searchEvent$.subscribe(value => {
       this.dataSource.filter = value;
+    });
+
+    this.filterService.showQERTable.subscribe(value => {
+      this.qerTableModel.hideTable.next(!value);
     });
   }
 
@@ -45,4 +50,14 @@ export class QuantumExecutionResourcesTableComponent implements OnInit {
   vendorClicked(vendor: string): void {
     // this.filterService.toggleVendor(vendor);
   }
+
+}
+
+class QerTableModel extends BaseTableModel<QuantumExecutionResource> {
+  columns = [
+    {name: 'name', label: 'Quantum Execution Resources'},
+    {name: 'executionType'},
+    {name: 'computationModel'},
+    {name: 'vendor'}
+  ];
 }

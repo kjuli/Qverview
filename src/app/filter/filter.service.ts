@@ -21,8 +21,62 @@ export class FilterService {
   private compilerFilterSubject = new Subject<Compiler[]>();
   private orchestratorFilterSubject = new Subject<Orchestrator[]>();
   private searchSubject = new Subject<string>();
+  private showSdkTableSubject = new Subject<boolean>();
+  private showQCSTableSubject = new Subject<boolean>();
+  private showQERTableSubject = new Subject<boolean>();
+  private showPLTableSubject = new Subject<boolean>();
+  private showOTableSubject = new Subject<boolean>();
+  private showCompilerTableSubject = new Subject<boolean>();
 
   constructor() {
+  }
+
+  setShowCompilerTable(showCompilerTable: boolean): void {
+    this.showCompilerTableSubject.next(showCompilerTable);
+  }
+
+  get showCompilerTable(): Observable<boolean> {
+    return this.showCompilerTableSubject.asObservable();
+  }
+
+  setShowOTable(showOTable: boolean): void {
+    this.showOTableSubject.next(showOTable);
+  }
+
+  get showOTable(): Observable<boolean> {
+    return this.showOTableSubject.asObservable();
+  }
+
+  get showSdkTable(): Observable<boolean> {
+    return this.showSdkTableSubject.asObservable();
+  }
+
+  setShowSdkTable(value: boolean): void {
+    this.showSdkTableSubject.next(value);
+  }
+
+  get showQCSTable(): Observable<boolean> {
+    return this.showQCSTableSubject.asObservable();
+  }
+
+  setShowQCSTable(showQCSTable: boolean): void {
+    this.showQCSTableSubject.next(showQCSTable);
+  }
+
+  get showQERTable(): Observable<boolean> {
+    return this.showQERTableSubject.asObservable();
+  }
+
+  setShowQERTable(showQERTable: boolean): void {
+    this.showQERTableSubject.next(showQERTable);
+  }
+
+  get showPLTable(): Observable<boolean> {
+    return this.showPLTableSubject.asObservable();
+  }
+
+  setShowPLTable(showPLTable: boolean): void {
+    this.showPLTableSubject.next(showPLTable);
   }
 
   get sdkFilterEvent$(): Observable<Sdk[]> {
@@ -96,4 +150,6 @@ export class FilterService {
   get searchEvent$(): Observable<string> {
     return this.searchSubject.asObservable();
   }
+
+
 }

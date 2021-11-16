@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { OrchestratorService } from '../orchestrator.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { Orchestrator } from '../orchestrator.model';
 import { FilterService } from '../../filter/filter.service';
+import {BaseTableModel} from '../../generictable/table.model';
 
 @Component({
   selector: 'app-orchestrators-table',
@@ -12,6 +13,30 @@ import { FilterService } from '../../filter/filter.service';
 export class OrchestratorsTableComponent implements OnInit {
 
   dataSource;
+  oTableModel: OTableModel;
+
+  constructor(private orchestratorService: OrchestratorService, private filterService: FilterService) {
+  }
+
+  ngOnInit(): void {
+    this.dataSource = new MatTableDataSource<Orchestrator>(this.orchestratorService.getAllOrchestrators());
+    this.oTableModel = new OTableModel(this.dataSource);
+
+    this.filterService.orchestratorFilterEvent$.subscribe(filter => {
+      this.dataSource = new MatTableDataSource(filter);
+      this.oTableModel.dataSource.next(this.dataSource);
+    });
+
+    this.filterService.searchEvent$.subscribe(value => {
+      this.dataSource.filter = value;
+    });
+
+    this.filterService.showOTable.subscribe(value => this.oTableModel.hideTable.next(!value));
+  }
+
+}
+
+class OTableModel extends BaseTableModel<Orchestrator> {
   displayedColumns = [
     'name',
     'licenses',
@@ -19,19 +44,11 @@ export class OrchestratorsTableComponent implements OnInit {
     'activeDevelopment',
     'productionReady'
   ];
-
-  constructor(private orchestratorService: OrchestratorService, private filterService: FilterService) {
-  }
-
-  ngOnInit(): void {
-    this.dataSource = new MatTableDataSource<Orchestrator>(this.orchestratorService.getAllOrchestrators());
-
-    this.filterService.orchestratorFilterEvent$.subscribe(filter => {
-      this.dataSource = new MatTableDataSource(filter);
-    });
-
-    this.filterService.searchEvent$.subscribe(value => {
-      this.dataSource.filter = value;
-    });
-  }
+  columns = [
+    {name: 'name', label: 'Orchestrator'},
+    {name: 'licenses'},
+    {name: 'programmingLanguages'},
+    {name: 'activeDevelopment'},
+    {name: 'productionReady'}
+  ];
 }

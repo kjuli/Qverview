@@ -98,6 +98,12 @@ export class FilterComponent implements OnInit {
   selectedActiveDevelopment = [];
   productionReady = ['true', 'false'];
   selectedProductionReady = [];
+  showSdkTable = true;
+  showQCSTable = true;
+  showQERTable = true;
+  showPLTable = true;
+  showCompilerTable = true;
+  showOTable = true;
 
   ngOnInit(): void {
     for (const sdk of this.sdkService.getAllSdks()) {
@@ -491,5 +497,14 @@ export class FilterComponent implements OnInit {
   clearProductionReady(): void {
     this.productionReady = [];
     this.updateView();
+  }
+
+  updateShowTable(): void {
+    this.filterService.setShowSdkTable(this.showSdkTable);
+    this.filterService.setShowQCSTable(this.showQCSTable);
+    this.filterService.setShowQERTable(this.showQERTable);
+    this.filterService.setShowPLTable(this.showPLTable);
+    this.filterService.setShowOTable(this.showOTable);
+    this.filterService.setShowCompilerTable(this.showCompilerTable);
   }
 }

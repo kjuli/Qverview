@@ -15,14 +15,14 @@
   font-size: large;
 }
 
-#filter-title-wrapper {
+.filter-title-wrapper {
   display: flex;
-  margin-top: 20px;
+  margin: 10px 5px;
   justify-content: space-between;
   align-items: center;
 }
 
-#filter-wrapper {
+.filter-wrapper {
   margin-top: 20px;
   margin-left: 20px;
   margin-right: 20px;
