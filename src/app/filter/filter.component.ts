@@ -3,7 +3,7 @@ import { SdkService } from '../sdk/sdk.service';
 import { FilterService } from './filter.service';
 import { QuantumExecutionResourceService } from '../quantum-execution-resource/quantum-execution-resource.service';
 import { QcsService } from '../quantum-cloud-service/qcs.service';
-import { Sdk } from '../sdk/sdk.model';
+import {License, SoftwareDevelopmentKit} from '../sdk/sdk.model';
 import { SdkFilterModel } from './sdkFilter.model';
 import { QcsFilterModel } from './qcsFilter.model';
 import { QuantumCloudService } from '../quantum-cloud-service/quantum-cloud-service.model';
@@ -41,7 +41,7 @@ export class FilterComponent implements OnInit {
 
   sdks = [];
   selectedSdks = [];
-  licenses = [];
+  licenses: License[] = [];
   selectedLicenses: any = [];
   programmingLanguages = [];
   selectedProgrammingLanguages = [];
@@ -94,9 +94,9 @@ export class FilterComponent implements OnInit {
   selectedOrchestratorLicenses = [];
   orchestratorProgrammingLanguages = [];
   selectedOrchestratorProgrammingLanguages = [];
-  activeDevelopment = ['true', 'false'];
+  activeDevelopment = [true, false];
   selectedActiveDevelopment = [];
-  productionReady = ['true', 'false'];
+  productionReady = [true, false];
   selectedProductionReady = [];
   showSdkTable = true;
   showQCSTable = true;
@@ -106,60 +106,16 @@ export class FilterComponent implements OnInit {
   showOTable = true;
 
   ngOnInit(): void {
-    for (const sdk of this.sdkService.getAllSdks()) {
-      this.sdks.push(sdk.name);
-      this.addAll(sdk.licenses, this.licenses);
-      this.addAll(sdk.programmingLanguages, this.programmingLanguages);
-      this.addAll(sdk.compilerInputLanguages, this.inputLanguages);
-      this.addAll(sdk.compilerOutputLanguages, this.outputLanguages);
-      this.addAll(sdk.compilerOptimizationStrategies, this.optimizationStrategies);
-    }
+    this.collectSdkData();
+    this.collectQcsData();
+    this.collectQerData();
+    this.collectPlData();
+    this.collectCompilerData();
+    this.collectOrchastratorData();
+    this.sortAllData();
+  }
 
-    for (const qcs of this.qcsService.getAllQuantumCloudServicesResources()) {
-      this.quantumCloudServices.push(qcs.name);
-      this.addAll(qcs.accessMethods, this.accessMethods);
-      if (!this.serviceModels.includes(qcs.serviceModel)) {
-        this.serviceModels.push(qcs.serviceModel);
-      }
-      this.addAll(qcs.assemblyLanguages, this.assemblyLanguages);
-    }
-
-    for (const qer of this.qerService.getAllQuantumExecutionResources()) {
-      this.quantumExecutionResources.push(qer.name);
-      this.executionTypes = ['QPU', 'Simulator'];
-      if (!this.computationModels.includes(qer.computationModel)) {
-        this.computationModels.push(qer.computationModel);
-      }
-      if (!this.vendors.includes(qer.vendor)) {
-        this.vendors.push(qer.vendor);
-      }
-    }
-
-    for (const qpl of this.qplService.getAllProgrammingLanguages()) {
-      if (!this.qplTypes.includes(qpl.type)) {
-        this.qplTypes.push(qpl.type);
-      }
-      if (!this.qplSyntaxImplementations.includes(qpl.syntaxImplementation)) {
-        this.qplSyntaxImplementations.push(qpl.syntaxImplementation);
-      }
-      if (!this.qplStandardizations.includes(qpl.standardization)) {
-        this.qplStandardizations.push(qpl.standardization);
-      }
-    }
-
-    for (const compiler of this.compilerService.getAllCompilers()) {
-      this.compilers.push(compiler.name);
-      this.addAll(compiler.inputLanguages, this.compilerInputLanguages);
-      this.addAll(compiler.outputLanguages, this.compilerOutputLanguages);
-      this.addAll(compiler.optimizationStrategies, this.compilerOptimizationStrategies);
-    }
-
-    for (const orchestrator of this.orchestratorService.getAllOrchestrators()) {
-      this.orchestrators.push(orchestrator.name);
-      this.addAll(orchestrator.licenses, this.orchestratorLicenses);
-      this.addAll(orchestrator.programmingLanguages, this.orchestratorProgrammingLanguages);
-    }
-
+  private sortAllData() {
     this.sdks.sort();
     this.licenses.sort();
     this.programmingLanguages.sort();
@@ -192,7 +148,63 @@ export class FilterComponent implements OnInit {
     this.orchestratorProgrammingLanguages.sort();
   }
 
-  addAll(source, target): void {
+  private collectOrchastratorData(): void {
+    for (const orchestrator of this.orchestratorService.orchestrators) {
+      this.orchestrators.push(orchestrator);
+      this.addAll(orchestrator.licenses, this.orchestratorLicenses);
+      this.addAll(orchestrator.programmingLanguages, this.orchestratorProgrammingLanguages);
+    }
+  }
+
+  private collectCompilerData(): void {
+    for (const compiler of this.compilerService.compilers) {
+      this.compilers.push(compiler);
+      this.addAll(compiler.inputLanguages, this.compilerInputLanguages);
+      this.addAll(compiler.outputLanguages, this.compilerOutputLanguages);
+      this.addAll(compiler.optimizationStrategies, this.compilerOptimizationStrategies);
+    }
+  }
+
+  private collectPlData(): void {
+    for (const qpl of this.qplService.programmingLanguages) {
+      this.programmingLanguages.push(qpl);
+      if (!this.qplTypes.includes(qpl.type)) {
+        this.qplTypes.push(qpl.type);
+      }
+      if (!this.qplSyntaxImplementations.includes(qpl.syntaxImplementation)) {
+        this.qplSyntaxImplementations.push(qpl.syntaxImplementation);
+      }
+      if (!this.qplStandardizations.includes(qpl.standardization)) {
+        this.qplStandardizations.push(qpl.standardization);
+      }
+    }
+  }
+
+  private collectQerData(): void {
+    for (const qer of this.qerService.quantumExecutionResources) {
+      this.quantumExecutionResources.push(qer.name);
+      this.executionTypes = ['QPU', 'Simulator'];
+      if (!this.computationModels.includes(qer.computationModel)) {
+        this.computationModels.push(qer.computationModel);
+      }
+      if (!this.vendors.includes(qer.vendor)) {
+        this.vendors.push(qer.vendor);
+      }
+    }
+  }
+
+  private collectQcsData(): void {
+    for (const qcs of this.qcsService.quantumCloudServices) {
+      this.quantumCloudServices.push(qcs.name);
+      this.addAll(qcs.accessMethods, this.accessMethods);
+      if (!this.serviceModels.includes(qcs.serviceModel)) {
+        this.serviceModels.push(qcs.serviceModel);
+      }
+      this.addAll(qcs.assemblyLanguages, this.assemblyLanguages);
+    }
+  }
+
+  addAll(source: any[], target: any[]): void {
     source.forEach(x => {
       if (!target.includes(x)) {
         target.push(x);
@@ -208,11 +220,12 @@ export class FilterComponent implements OnInit {
       compilerInputLanguages: this.selectedInputLanguages,
       compilerOutputLanguages: this.selectedOutputLanguages,
       compilerOptimizationStrategies: this.selectedOptimizationStrategies,
-      activeDevelopment: '',
+      activeDevelopment: [] /* TODO */,
       supportedQuantumCloudServices: [],
-      localSimulator: '',
+      localSimulator: [] /* TODO */,
     };
-    let filteredSdks: Sdk[] = this.sdkService.getFilteredSdks(sdkFilter);
+    let filteredSdks: SoftwareDevelopmentKit[] = this.sdkService.getFilteredSdks(sdkFilter);
+    console.log("Filtered Sdks: <" + filteredSdks.length + ">");
 
     const qcsFilter: QcsFilterModel = {
       names: this.selectedQuantumCloudServices,
@@ -280,7 +293,7 @@ export class FilterComponent implements OnInit {
     this.filterService.setOrchestratorFilter(filteredOrchestrators);
   }
 
-  private qcsIsSupportedBySdks(sdks: Sdk[], quantumCloudService: QuantumCloudService): boolean {
+  private qcsIsSupportedBySdks(sdks: SoftwareDevelopmentKit[], quantumCloudService: QuantumCloudService): boolean {
     const allSupportedQcs = [];
     sdks.forEach(sdk => {
       sdk.supportedQuantumCloudServices.forEach(value => {
@@ -289,14 +302,14 @@ export class FilterComponent implements OnInit {
         }
       });
     });
-    return allSupportedQcs.includes(quantumCloudService.name);
+    return allSupportedQcs.includes(quantumCloudService);
   }
 
-  private sdkIsSupportedByQcs(qcss: QuantumCloudService[], sdk: Sdk): boolean {
+  private sdkIsSupportedByQcs(qcss: QuantumCloudService[], sdk: SoftwareDevelopmentKit): boolean {
     const namesOfAllActiveCloudServices = [];
     qcss.forEach(qcs => {
-      if (!namesOfAllActiveCloudServices.includes(qcs.name)) {
-        namesOfAllActiveCloudServices.push(qcs.name);
+      if (!namesOfAllActiveCloudServices.includes(qcs)) {
+        namesOfAllActiveCloudServices.push(qcs);
       }
     });
 
@@ -318,14 +331,14 @@ export class FilterComponent implements OnInit {
         }
       });
     });
-    return namesOfAllSupportedQers.includes(qer.name);
+    return namesOfAllSupportedQers.includes(qer);
   }
 
   private qcsIsSupportedByQer(qers: QuantumExecutionResource[], qcs: QuantumCloudService): boolean {
     const namesOfAllActiveQers = [];
     qers.forEach(qer => {
-      if (!namesOfAllActiveQers.includes(qer.name)) {
-        namesOfAllActiveQers.push(qer.name);
+      if (!namesOfAllActiveQers.includes(qer)) {
+        namesOfAllActiveQers.push(qer);
       }
     });
 
@@ -506,5 +519,18 @@ export class FilterComponent implements OnInit {
     this.filterService.setShowPLTable(this.showPLTable);
     this.filterService.setShowOTable(this.showOTable);
     this.filterService.setShowCompilerTable(this.showCompilerTable);
+  }
+
+  /**
+   * Collects all the SDK data.
+   */
+  private collectSdkData(): void {
+    for (const sdk of this.sdkService.softwareDevelopmentKits) {
+      this.sdks.push(sdk);
+      this.addAll(sdk.licenses, this.licenses);
+      this.addAll(sdk.compilerInputLanguages, this.inputLanguages);
+      this.addAll(sdk.compilerOutputLanguages, this.outputLanguages);
+      this.addAll(sdk.compilerOptimizationStrategies, this.optimizationStrategies);
+    }
   }
 }

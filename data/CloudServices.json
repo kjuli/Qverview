@@ -46,28 +46,28 @@
     "accessMethods": ["GUI", "SDK", "CLI"],
     "serviceModel": "QCaaS",
     "resources": ["Rigetti Aspen-8"],
-    "assemblyLanguages": ["N/A"]
+    "assemblyLanguages": []
   },
   {
     "name": "AQT Cloud",
     "accessMethods": ["SDK (3rd party)", "REST"],
     "serviceModel": "QCaaS",
     "resources": ["AQT Innsbruck", "AQT QASM Simulator", "AQT QASM Simulator Noise"],
-    "assemblyLanguages": ["N/A"]
+    "assemblyLanguages": []
   },
   {
     "name": "1Qloud",
-    "accessMethods": ["N/A"],
+    "accessMethods": [],
     "serviceModel": "QCaaS",
-    "resources": ["N/A"],
-    "assemblyLanguages": ["N/A"]
+    "resources": [],
+    "assemblyLanguages": []
   },
   {
     "name": "QC Ware Forge",
-    "accessMethods": ["N/A"],
+    "accessMethods": [],
     "serviceModel": "QCaaS",
     "resources": ["TrappedIon", "Superconducting", "Annealer", "GPU Simulator", "CPU Simulator"],
-    "assemblyLanguages": ["N/A"]
+    "assemblyLanguages": []
   },
   {
     "name": "Quantum Inspire",
@@ -86,20 +86,20 @@
     "accessMethods": ["GUI"],
     "serviceModel": "PaaS/SaaS",
     "resources": ["Rigetti Aspen-8"],
-    "assemblyLanguages": ["-"]
+    "assemblyLanguages": []
   },
   {
     "name": "Quantum Programming Studio",
     "accessMethods": ["GUI", "SDK"],
     "serviceModel": "PaaS/SaaS",
     "resources": ["Simulator"],
-    "assemblyLanguages": ["-"]
+    "assemblyLanguages": []
   },
   {
     "name": "Strangeworks",
     "accessMethods": ["GUI"],
     "serviceModel": "PaaS/SaaS",
     "resources": ["'Qiskit'", "'Q#'", "'Forest'", "'Cirq'", "'Ocean'", "'Pennylane'"],
-    "assemblyLanguages": ["-"]
+    "assemblyLanguages": []
   }
 ]

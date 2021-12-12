@@ -1,6 +1,12 @@
+import {
+  ProgrammingLanguage,
+  ProgrammingType, Standardization,
+  SyntaxImplementation
+} from "../programming-language/programming-language.model";
+
 export interface QplFilterModel {
-  names: string[];
-  types: string[];
-  syntaxImplementations: string[];
-  standardizations: string[];
+  names: ProgrammingLanguage[];
+  types: ProgrammingType[];
+  syntaxImplementations: SyntaxImplementation[];
+  standardizations: Standardization[];
 }

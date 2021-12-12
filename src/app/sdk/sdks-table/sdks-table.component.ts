@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SdkService } from '../sdk.service';
 import { FilterService } from '../../filter/filter.service';
-import { Sdk } from '../sdk.model';
+import { SoftwareDevelopmentKit } from '../sdk.model';
 import {BaseTableModel} from '../../generictable/table.model';
 
 @Component({
@@ -19,7 +19,7 @@ export class SdksTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource<Sdk>(this.sdkService.getAllSdks());
+    this.dataSource = new MatTableDataSource<SoftwareDevelopmentKit>(this.sdkService.softwareDevelopmentKits);
     this.sdkTableModel = new SdkTableModel(this.dataSource);
 
     this.filterService.sdkFilterEvent$.subscribe(filter => {
@@ -64,11 +64,12 @@ export class SdksTableComponent implements OnInit {
   }
 }
 
-class SdkTableModel extends BaseTableModel<Sdk> {
+class SdkTableModel extends BaseTableModel<SoftwareDevelopmentKit> {
 
   columns = [
     {name: 'name', label: 'Software Development Kit'},
     {name: 'licenses'},
+    {name: 'programmingLanguages'},
     {name: 'compilerInputLanguages'},
     {name: 'compilerOutputLanguages'},
     {name: 'compilerOptimizationStrategies'},

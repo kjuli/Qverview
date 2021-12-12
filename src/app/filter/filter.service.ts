@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { Sdk } from '../sdk/sdk.model';
+import { SoftwareDevelopmentKit } from '../sdk/sdk.model';
 import { QuantumCloudService } from '../quantum-cloud-service/quantum-cloud-service.model';
 import { QuantumExecutionResource } from '../quantum-execution-resource/quantum-execution-resource.model';
 import { ProgrammingLanguage } from '../programming-language/programming-language.model';
@@ -12,7 +12,7 @@ import { Orchestrator } from '../orchestrator/orchestrator.model';
 })
 export class FilterService {
 
-  private sdkFilterSubject = new Subject<Sdk[]>();
+  private sdkFilterSubject = new Subject<SoftwareDevelopmentKit[]>();
   private qcsFilterSubject = new Subject<QuantumCloudService[]>();
   private qerFilterSubject = new Subject<QuantumExecutionResource[]>();
   private syncSdkQcsSubject = new Subject<boolean>();
@@ -79,11 +79,11 @@ export class FilterService {
     this.showPLTableSubject.next(showPLTable);
   }
 
-  get sdkFilterEvent$(): Observable<Sdk[]> {
+  get sdkFilterEvent$(): Observable<SoftwareDevelopmentKit[]> {
     return this.sdkFilterSubject.asObservable();
   }
 
-  setSdkFilter(filteredSdks: Sdk[]): void {
+  setSdkFilter(filteredSdks: SoftwareDevelopmentKit[]): void {
     this.sdkFilterSubject.next(filteredSdks);
   }
 
@@ -152,4 +152,27 @@ export class FilterService {
   }
 
 
+}
+
+/**
+ * Returns whether the array can be filtered by the given keys, that is,
+ * the array contains the same values as the filter keys.
+ *
+ * If filterKeys is empty, this will always return true.
+ *
+ * @param filterKeys The keys to filter the array.
+ * @param array The array itself that should be filtered.
+ * @returns true if the filtered array is not empty, or if filterKeys is empty.
+ */
+export function supportsOneOf(filterKeys: any[], array: any[]): boolean {
+  return ((filterKeys === null || filterKeys === undefined || filterKeys.length === 0) ||
+          (array !== null && array !== undefined && array.find(value => filterKeys.includes(value)) !== undefined));
+}
+
+export function getEnumFromString<T extends string>(enumArray: T[], str: string): T {
+  const result = enumArray.find(value => value.toLowerCase() === str.toLowerCase());
+  if (result === undefined) {
+      throw new TypeError(`The specified string is not a correct value: ${str}`);
+  }
+  return result;
 }

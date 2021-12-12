@@ -1,75 +1,65 @@
 import { Injectable } from '@angular/core';
-import { Sdk } from './sdk.model';
+import { SdkDto, SoftwareDevelopmentKit } from './sdk.model';
 // @ts-ignore
 import softwareDevelopmentKitsJson from '../../../data/SoftwareDevelopmentKits.json';
 import { SdkFilterModel } from '../filter/sdkFilter.model';
+import { QcsService } from '../quantum-cloud-service/qcs.service';
+import { ProgrammingLanguageService } from '../programming-language/programming-language.service';
+import { supportsOneOf } from '../filter/filter.service';
+import {NameRepository, Repository} from '../common/repository';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SdkService {
+export class SdkService extends NameRepository<SoftwareDevelopmentKit> {
+  private readonly sdks: SdkDto[] = softwareDevelopmentKitsJson;
 
-  sdks: Sdk[] = softwareDevelopmentKitsJson;
-
-  constructor() {
+  constructor(private readonly qcsService: QcsService, private readonly languageService: ProgrammingLanguageService) {
+    super();
   }
 
-  getAllSdks(): Sdk[] {
-    return this.sdks;
+  get softwareDevelopmentKits(): SoftwareDevelopmentKit[] {
+    return this.data;
   }
 
-  getFilteredSdks(sdkFilter: SdkFilterModel): Sdk[] {
-    const result: Sdk[] = [];
-    for (const x of this.getAllSdks()) {
-      if (this.isActive(x, sdkFilter)) {
-        result.push(x);
-      }
-    }
-    return result;
+  protected receiveData(): SoftwareDevelopmentKit[] {
+    return this.sdks.map(value => SoftwareDevelopmentKit.fromDto(value, this.languageService, this.qcsService));
   }
 
-  isActive(sdk: Sdk, filter: SdkFilterModel): boolean {
+  getFilteredSdks(sdkFilter: SdkFilterModel): SoftwareDevelopmentKit[] {
+    return this.softwareDevelopmentKits.filter(value => this.isActive(value, sdkFilter));
+  }
+
+  private isActive(sdk: SoftwareDevelopmentKit, filter: SdkFilterModel): boolean {
     let result = true;
-    if (filter.names.length > 0 && !filter.names.includes(sdk.name)) {
+    if (filter.names.length > 0 && !filter.names.includes(sdk)) {
       result = false;
     }
-    if (!this.supportsOneOf(filter.licenses, sdk.licenses)) {
+    if (!supportsOneOf(filter.licenses, sdk.licenses)) {
       result = false;
     }
-    if (!this.supportsOneOf(filter.programmingLanguages, sdk.programmingLanguages)) {
+    if (!supportsOneOf(filter.programmingLanguages, sdk.programmingLanguages)) {
       result = false;
     }
-    if (!this.supportsOneOf(filter.compilerInputLanguages, sdk.compilerInputLanguages)) {
+    if (!supportsOneOf(filter.compilerInputLanguages, sdk.compilerInputLanguages)) {
       result = false;
     }
-    if (!this.supportsOneOf(filter.compilerOutputLanguages, sdk.compilerOutputLanguages)) {
+    if (!supportsOneOf(filter.compilerOutputLanguages, sdk.compilerOutputLanguages)) {
       result = false;
     }
-    if (!this.supportsOneOf(filter.compilerOptimizationStrategies, sdk.compilerOptimizationStrategies)) {
+    if (!supportsOneOf(filter.compilerOptimizationStrategies, sdk.compilerOptimizationStrategies)) {
       result = false;
     }
-    if (filter.activeDevelopment !== '' && filter.activeDevelopment !== sdk.activeDevelopment) {
+    if (filter.activeDevelopment.length > 0 && !filter.activeDevelopment.includes(sdk.activeDevelopment)) {
       result = false;
     }
-    if (!this.supportsOneOf(filter.supportedQuantumCloudServices, sdk.supportedQuantumCloudServices)) {
+    if (!supportsOneOf(filter.supportedQuantumCloudServices, sdk.supportedQuantumCloudServices)) {
       result = false;
     }
-    if (filter.localSimulator !== '' && filter.localSimulator !== sdk.localSimulator) {
+    if (filter.localSimulator.length > 0 && filter.localSimulator.includes(sdk.localSimulator)) {
       result = false;
     }
 
     return result;
-  }
-
-  private supportsOneOf(filter: string[], obj: string[]): boolean {
-    if (filter == null || filter.length === 0) {
-      return true;
-    }
-    for (const x of filter) {
-      if (obj.includes(x)) {
-        return true;
-      }
-    }
-    return false;
   }
 }

@@ -3,7 +3,7 @@
     "name": "t|ket>",
     "inputLanguages": ["OpenQASM", "Quipper"],
     "outputLanguages": ["OpenQASM", "Python+Qiskit", "Python+BraketSDK", "Python+Cirq", "Python+Forest", "Python+Q#"],
-    "optimizationStrategies": ["hardware-specific", "hardware-specific"]
+    "optimizationStrategies": ["hardware-specific"]
   },
   {
     "name": "quilc",
@@ -45,7 +45,7 @@
     "name": "quantum-circuit",
     "inputLanguages": ["OpenQASM", "Quil"],
     "outputLanguages": ["OpenQASM", "Python+PyQuil", "Quil", "Python+Qiskit", "Python+Cirq", "Python+TensorFlow Quanutm", "Q#", "QuEST"],
-    "optimizationStrategies": ["none"]
+    "optimizationStrategies": []
   }
 ]
 

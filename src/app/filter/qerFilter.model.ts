@@ -1,6 +1,12 @@
+import {
+  ComputationModel,
+  ExecutionType,
+  QuantumExecutionResource, Vendor
+} from "../quantum-execution-resource/quantum-execution-resource.model";
+
 export interface QerFilterModel {
-  names: string[];
-  executionType: string[];
-  computationModels: string[];
-  vendors: string[];
+  names: QuantumExecutionResource[];
+  executionType: ExecutionType[];
+  computationModels: ComputationModel[];
+  vendors: Vendor[];
 }

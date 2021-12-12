@@ -18,7 +18,7 @@ export class ProgrammingLanguageTableComponent implements OnInit {
   constructor(private programmingLanguageService: ProgrammingLanguageService, private filterService: FilterService) { }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource<ProgrammingLanguage>(this.programmingLanguageService.getAllProgrammingLanguages());
+    this.dataSource = new MatTableDataSource<ProgrammingLanguage>(this.programmingLanguageService.programmingLanguages);
     this.plTableModel = new PlTableModel(this.dataSource);
 
     this.filterService.qplFilterEvent$.subscribe(filter => {

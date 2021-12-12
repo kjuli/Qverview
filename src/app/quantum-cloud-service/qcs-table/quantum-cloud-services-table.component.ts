@@ -20,7 +20,7 @@ export class QuantumCloudServicesTableComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource(this.qcsService.getAllQuantumCloudServicesResources());
+    this.dataSource = new MatTableDataSource(this.qcsService.quantumCloudServices);
     this.qcsTableModel = new QcsTableModel(this.dataSource);
 
     this.filterService.qcsFilterEvent$.subscribe(filter => {
@@ -44,6 +44,6 @@ class QcsTableModel extends BaseTableModel<QuantumCloudService> {
     {name: 'accessMethods'},
     {name: 'serviceModel'},
     {name: 'resources'},
-    {name: 'assemblyLanguage'}
+    {name: 'assemblyLanguages'}
   ];
 }

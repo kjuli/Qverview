@@ -19,7 +19,7 @@ export class QuantumExecutionResourcesTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource(this.quantumExecutionResourceService.getAllQuantumExecutionResources());
+    this.dataSource = new MatTableDataSource(this.quantumExecutionResourceService.quantumExecutionResources);
     this.qerTableModel = new QerTableModel(this.dataSource);
     this.filterService.qerFilterEvent$.subscribe(qer => {
       this.dataSource = new MatTableDataSource(qer);

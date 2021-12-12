@@ -1,7 +1,11 @@
+import {Orchestrator} from "../orchestrator/orchestrator.model";
+import {License} from "../sdk/sdk.model";
+import {ProgrammingLanguage} from "../programming-language/programming-language.model";
+
 export interface OrchestratorFilterModel {
-  names: string[];
-  licenses: string[];
-  programmingLanguages: string[];
-  activeDevelopment: string[];
-  productionReady: string[];
+  names: Orchestrator[];
+  licenses: License[];
+  programmingLanguages: ProgrammingLanguage[];
+  activeDevelopment: boolean[];
+  productionReady: boolean[];
 }

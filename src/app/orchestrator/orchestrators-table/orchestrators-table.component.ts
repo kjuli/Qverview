@@ -19,7 +19,7 @@ export class OrchestratorsTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource<Orchestrator>(this.orchestratorService.getAllOrchestrators());
+    this.dataSource = new MatTableDataSource<Orchestrator>(this.orchestratorService.orchestrators);
     this.oTableModel = new OTableModel(this.dataSource);
 
     this.filterService.orchestratorFilterEvent$.subscribe(filter => {
@@ -37,13 +37,6 @@ export class OrchestratorsTableComponent implements OnInit {
 }
 
 class OTableModel extends BaseTableModel<Orchestrator> {
-  displayedColumns = [
-    'name',
-    'licenses',
-    'programmingLanguages',
-    'activeDevelopment',
-    'productionReady'
-  ];
   columns = [
     {name: 'name', label: 'Orchestrator'},
     {name: 'licenses'},
