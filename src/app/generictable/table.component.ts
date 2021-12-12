@@ -3,6 +3,17 @@ import {TableModel} from './table.model';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 
+/**
+ * This component is a generic table that all data about Quantum services, SDKs, etc.
+ * share. The information about the table and its data is given by a {@link TableModel}.
+ *
+ * Each Table has a paginator. The column will be displayed by the given name in {@link ColumnDefinition}
+ * if the label wasn't explicitly given. If the name is in camelCase, then it will be converted
+ * into a sentenced string ({@link #convertCamelCaseToSentence}).
+ *
+ * When a cell is going to be displayed, then {@link TableModel#onCell} will be called and the
+ * returned string is displayed.
+ */
 @Component({
   selector: 'app-quantum-table',
   templateUrl: './table.component.html',
@@ -10,22 +21,23 @@ import {MatPaginator} from '@angular/material/paginator';
 })
 export class TableComponent implements OnInit, AfterViewInit {
 
+  /** The information about the table and its data. */
   @Input() tableDefinition: TableModel<any>;
 
+  /** An array of options about how many rows should be displayed at once. */
+  @Input() pageSizeOptions = [5, 10, 20];
+
+  /** The actual data received by the {@link #tableDefinition} */
   dataSource: MatTableDataSource<any>;
+  /** Hides the table when true. */
   hideTable: boolean;
+  /** The column names received by {@link #tableDefinition} */
   columnNames: string[];
 
-  @Input() pageSizeOptions = [5, 10, 20];
   @ViewChild('paginator') paginator: MatPaginator;
 
 
   ngOnInit(): void {
-    // this.dataSourceObservable.subscribe(value => {
-    //   this.dataSource = value;
-    //   this.dataSource.paginator = this.paginator;
-    // });
-    // this.hideTableObservable.subscribe(value => this.hideTable = value);
     this.tableDefinition.dataSource.subscribe(value => {
       this.dataSource = value;
       this.dataSource.paginator = this.paginator;
@@ -40,6 +52,12 @@ export class TableComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Converts a string that is in camelCase to a sentenced string. For example,
+   * {@code "thisExample"} will be converted to {@code "This Example"}.
+   * @param input The string to convert to. Should be in camelCase.
+   * @return a sentenced-based string.
+   */
   convertCamelCaseToSentence(input: string): string {
     const result = input.replace(/([A-Z])/g, ' $1');
     return result.charAt(0).toUpperCase() + result.slice(1);
