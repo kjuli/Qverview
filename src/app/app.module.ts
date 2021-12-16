@@ -32,6 +32,9 @@ import { SyncQcsQerButtonComponent } from './filter/sync-qcs-qer-button/sync-qcs
 import { IndexComponent } from './index/index.component';
 import { LanguageGraphComponent } from './language-graph/language-graph.component';
 import {TableComponent} from './generictable/table.component';
+import {HttpClient, HttpClientModule} from "@angular/common/http";
+import { RepositoryDialogComponent } from './repository-dialog/repository-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -47,7 +50,8 @@ import {TableComponent} from './generictable/table.component';
     SyncQcsQerButtonComponent,
     IndexComponent,
     LanguageGraphComponent,
-    TableComponent
+    TableComponent,
+    RepositoryDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -70,6 +74,8 @@ import {TableComponent} from './generictable/table.component';
     MatExpansionModule,
     MatCardModule,
     MatInputModule,
+    HttpClientModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

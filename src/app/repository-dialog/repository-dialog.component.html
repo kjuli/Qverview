@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>Switch Repository</h2>
+<mat-dialog-content class="mat-typography">
+  <p>You can switch the data repository in this dialog. Please assure that the repository's main branch has the corresponding <em>JSON</em> files.</p>
+  <p>
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Repository url</mat-label>
+      <input matInput placeholder="Repository URL" [(ngModel)]="repositoryUrl"/>
+      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      <mat-hint>Use the URL of the form https://github.com/&lt;repo&gt;</mat-hint>
+
+    </mat-form-field>
+  </p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Apply</button>
+</mat-dialog-actions>

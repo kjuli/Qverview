@@ -7,6 +7,8 @@ import { QcsService } from '../quantum-cloud-service/qcs.service';
 import { ProgrammingLanguageService } from '../programming-language/programming-language.service';
 import { supportsOneOf } from '../filter/filter.service';
 import {NameRepository, Repository} from '../common/repository';
+import {ApiService} from "../api/api.service";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +16,10 @@ import {NameRepository, Repository} from '../common/repository';
 export class SdkService extends NameRepository<SoftwareDevelopmentKit> {
   private readonly sdks: SdkDto[] = softwareDevelopmentKitsJson;
 
-  constructor(private readonly qcsService: QcsService, private readonly languageService: ProgrammingLanguageService) {
+  constructor(private readonly qcsService: QcsService, private readonly languageService: ProgrammingLanguageService,
+              private readonly api: ApiService) {
     super();
+    //this.sdks = api.getData<SdkDto[]>("SoftwareDevelopmentKits.json");
   }
 
   get softwareDevelopmentKits(): SoftwareDevelopmentKit[] {
