@@ -6,8 +6,7 @@
         <ng-template #standardName><span>{{convertCamelCaseToSentence(column.name)}}</span></ng-template>
       </th>
       <td mat-cell *matCellDef="let row">
-        <div class="element-in-table" (click)="tableDefinition.onCell(row, column)"
-             [innerHTML]="tableDefinition.onCell(row, column)">
+        <div class="element-in-table" (click)="tableDefinition.onCell(row, column)" [innerHTML]="tableDefinition.onCell(row, column)">
         </div>
       </td>
     </ng-container>

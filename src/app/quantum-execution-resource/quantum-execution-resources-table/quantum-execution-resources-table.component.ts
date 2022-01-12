@@ -19,20 +19,21 @@ export class QuantumExecutionResourcesTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource(this.quantumExecutionResourceService.quantumExecutionResources);
-    this.qerTableModel = new QerTableModel(this.dataSource);
-    this.filterService.qerFilterEvent$.subscribe(qer => {
-      this.dataSource = new MatTableDataSource(qer);
-      this.qerTableModel.dataSource.next(this.dataSource);
-    });
+    this.qerTableModel = new QerTableModel(this.quantumExecutionResourceService);
+    this.qerTableModel.connectToFilterService(this.filterService.qerFilterEvent$, this.filterService.searchEvent$, this.filterService.showQERTable);
 
-    this.filterService.searchEvent$.subscribe(value => {
-      this.dataSource.filter = value;
-    });
-
-    this.filterService.showQERTable.subscribe(value => {
-      this.qerTableModel.hideTable.next(!value);
-    });
+    // this.filterService.qerFilterEvent$.subscribe(qer => {
+    //   this.dataSource = new MatTableDataSource(qer);
+    //   this.qerTableModel.dataSource.next(this.dataSource);
+    // });
+    //
+    // this.filterService.searchEvent$.subscribe(value => {
+    //   this.dataSource.filter = value;
+    // });
+    //
+    // this.filterService.showQERTable.subscribe(value => {
+    //   this.qerTableModel.hideTable.next(!value);
+    // });
   }
 
   nameClicked(name: string): void {

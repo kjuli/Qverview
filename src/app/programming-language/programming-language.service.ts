@@ -1,28 +1,24 @@
 import { Injectable } from '@angular/core';
 import { ProgrammingLanguage, ProgrammingLanguageDto, ProgrammingType } from './programming-language.model';
 // @ts-ignore
-import programmingLanguagesJson from '../../../data/ProgrammingLanguages.json';
+import programmingLanguagesJson from '../../../data/old/ProgrammingLanguages.json';
 import { QerFilterModel } from '../filter/qerFilter.model';
 import { QuantumExecutionResource } from '../quantum-execution-resource/quantum-execution-resource.model';
 import { QplFilterModel } from '../filter/qplFilter.model';
+import {NameRepository, Repository} from '../common/repository';
+import API_STATE from '../api/api.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProgrammingLanguageService {
+export class ProgrammingLanguageService extends NameRepository<ProgrammingLanguage> {
 
-  private readonly programmingLanguagesDto: ProgrammingLanguageDto[] = programmingLanguagesJson;
-  private cache: ProgrammingLanguage[];
-
-  constructor() { }
+  constructor() {
+    super('programmingLanguage', ProgrammingLanguage.fromDto);
+  }
 
   get programmingLanguages(): ProgrammingLanguage[] {
-    if (this.cache !== null && this.cache !== undefined) {
-      return this.cache;
-    }
-
-    this.cache = this.programmingLanguagesDto.map(value => ProgrammingLanguage.fromDto(value));
-    return this.cache;
+    return this.data;
   }
 
   getFilteredQpls(qplFilter: QplFilterModel): ProgrammingLanguage[] {
@@ -33,9 +29,9 @@ export class ProgrammingLanguageService {
     return programmingLanguage.type === ProgrammingType.Assembly;
   }
 
-  findByName(name: string): ProgrammingLanguage {
-    return this.programmingLanguages.find(value => value.name === name);
-  }
+  // protected receiveData(): ProgrammingLanguage[] {
+  //   return API_STATE.programmingLanguages.map(value => ProgrammingLanguage.fromDto(value));
+  // }
 
   private isActive(qpl: ProgrammingLanguage, filter: QplFilterModel): boolean {
     if (filter.names.length > 0 && !filter.names.includes(qpl)) {

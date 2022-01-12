@@ -1,37 +1,31 @@
 import { Injectable } from '@angular/core';
 import { QuantumCloudService, QuantumCloudServiceDto } from './quantum-cloud-service.model';
 // @ts-ignore
-import cloudServicesJson from '../../../data/CloudServices.json';
+import cloudServicesJson from '../../../data/old/CloudServices.json';
 import { FilterService, supportsOneOf } from '../filter/filter.service';
 import { SdkService } from '../sdk/sdk.service';
 import { QcsFilterModel } from '../filter/qcsFilter.model';
 import { QuantumExecutionResourceService } from '../quantum-execution-resource/quantum-execution-resource.service';
 import { ProgrammingType } from '../programming-language/programming-language.model';
 import { ProgrammingLanguageService } from '../programming-language/programming-language.service';
+import {NameRepository} from '../common/repository';
 
 @Injectable({
   providedIn: 'root'
 })
-export class QcsService {
-
-  private readonly qcs: QuantumCloudServiceDto[] = cloudServicesJson;
-  private cache: QuantumCloudService[];
+export class QcsService extends NameRepository<QuantumCloudService> {
 
   constructor(private languageService: ProgrammingLanguageService,
               private qerService: QuantumExecutionResourceService) {
+    super('qcs', data => QuantumCloudService.fromDto(data, qerService, languageService));
   }
+
+  // protected receiveData(): QuantumCloudService[] {
+  //   return this.qcs.map(dto => QuantumCloudService.fromDto(dto, this.qerService, this.languageService));
+  // }
 
   get quantumCloudServices(): QuantumCloudService[] {
-    if (this.cache !== null && this.cache !== undefined) {
-      return this.cache;
-    }
-
-    this.cache = this.qcs.map(value => QuantumCloudService.fromDto(value, this.qerService, this.languageService));
-    return this.cache;
-  }
-
-  findByName(name: string): QuantumCloudService {
-    return this.quantumCloudServices.find(value => value.name === name);
+    return this.data;
   }
 
   getFilteredQcs(filter: QcsFilterModel): QuantumCloudService[] {

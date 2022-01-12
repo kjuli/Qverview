@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SdkDto, SoftwareDevelopmentKit } from './sdk.model';
 // @ts-ignore
-import softwareDevelopmentKitsJson from '../../../data/SoftwareDevelopmentKits.json';
+import softwareDevelopmentKitsJson from '../../../data/old/SoftwareDevelopmentKits.json';
 import { SdkFilterModel } from '../filter/sdkFilter.model';
 import { QcsService } from '../quantum-cloud-service/qcs.service';
 import { ProgrammingLanguageService } from '../programming-language/programming-language.service';
@@ -14,21 +14,19 @@ import {Observable} from "rxjs";
   providedIn: 'root'
 })
 export class SdkService extends NameRepository<SoftwareDevelopmentKit> {
-  private readonly sdks: SdkDto[] = softwareDevelopmentKitsJson;
+  //private readonly sdks: SdkDto[] = softwareDevelopmentKitsJson;
 
-  constructor(private readonly qcsService: QcsService, private readonly languageService: ProgrammingLanguageService,
-              private readonly api: ApiService) {
-    super();
-    //this.sdks = api.getData<SdkDto[]>("SoftwareDevelopmentKits.json");
+  constructor(private readonly qcsService: QcsService, private readonly languageService: ProgrammingLanguageService) {
+    super('sdk', data => SoftwareDevelopmentKit.fromDto(data, languageService, qcsService));
   }
 
   get softwareDevelopmentKits(): SoftwareDevelopmentKit[] {
     return this.data;
   }
 
-  protected receiveData(): SoftwareDevelopmentKit[] {
-    return this.sdks.map(value => SoftwareDevelopmentKit.fromDto(value, this.languageService, this.qcsService));
-  }
+  // protected receiveData(): SoftwareDevelopmentKit[] {
+  //   return this.sdks.map(value => SoftwareDevelopmentKit.fromDto(value, this.languageService, this.qcsService));
+  // }
 
   getFilteredSdks(sdkFilter: SdkFilterModel): SoftwareDevelopmentKit[] {
     return this.softwareDevelopmentKits.filter(value => this.isActive(value, sdkFilter));

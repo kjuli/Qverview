@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {ApiService} from '../api/api.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-repository-dialog',
@@ -9,9 +11,13 @@ export class RepositoryDialogComponent implements OnInit {
 
   repositoryUrl: string;
 
-  constructor() { }
+  constructor(private apiService: ApiService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
+  reloadApi(): void {
+    console.log('reloading!! to ' + this.repositoryUrl);
+    this.apiService.getAllData(this.repositoryUrl);
+  }
 }

@@ -6,3 +6,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-row:nth-child(even) {
   background-color: #e9e7ed;
 }
+
+.reference {
+  color: #000000;
+  text-decoration: none;
+  border-bottom: 1px black dotted;
+  font-weight: bold;
+}

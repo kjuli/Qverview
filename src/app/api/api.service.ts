@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
-import {HttpErrorResponse} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, throwError} from "rxjs";
 import {catchError, map} from "rxjs/operators";
 import {fromFetch} from "rxjs/fetch";
+import API_STATE, {ApiModel, ApiParameters} from './api.model';
+import {ProgrammingLanguageDto} from '../programming-language/programming-language.model';
+import {OrchestratorDto} from '../orchestrator/orchestrator.model';
+import {QuantumExecutionResourceDto} from '../quantum-execution-resource/quantum-execution-resource.model';
+import {SplashscreenStateService} from '../splash/splashscreen-state.service';
 
 /**
  * This service provides a way to receive the necessary
@@ -12,14 +17,17 @@ import {fromFetch} from "rxjs/fetch";
   providedIn: 'root'
 })
 export class ApiService {
+  private expectedCalls: number;
+  private conductedCalls = 0;
+
   /**
    * The base url.
    */
-  baseUrl: string = "https://raw.githubusercontent.com/kjuli/Qverview/master/data";
+  baseUrl: string = 'https://raw.githubusercontent.com/kjuli/Qverview/master/data';
 
-  constructor() { }
+  constructor(private httpClient: HttpClient, private splashScreenService: SplashscreenStateService) { }
 
-  private handleError(error: HttpErrorResponse) {
+  private static handleError(error: HttpErrorResponse): Observable<never> {
     if (error.error instanceof ErrorEvent) {
       console.error(`An error occurred: ${error.error.message}`);
     } else {
@@ -29,20 +37,54 @@ export class ApiService {
     return throwError(error);
   }
 
-  private extractData(res: Response): Response | any {
-    return res || {};
+  getData<T>(jsonFileName: string): Observable<T> {
+    return this.httpClient.get<T>(this.baseUrl + '/' + jsonFileName, {
+      headers: {
+        'Content-Type': 'text/plain'
+      }
+    }).pipe(
+      catchError(ApiService.handleError)
+    );
   }
 
-  getData<T>(jsonFileName: string): Observable<T> {
-    return fromFetch(this.baseUrl + "/" + jsonFileName, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      method: 'GET',
-      mode: 'no-cors'
-    }).pipe(
-      map(this.extractData),
-      catchError(this.handleError)
-    );
+  public getAllData(baseUrl?: string): Promise<ApiModel> {
+    this.conductedCalls = 0;
+    if (baseUrl) {
+      this.baseUrl = baseUrl;
+    }
+
+    const observables: ApiParameters = {
+      programmingLanguage: this.getData<ProgrammingLanguageDto[]>('ProgrammingLanguages.json'),
+      orchestrator: this.getData<OrchestratorDto[]>('Orchestrators.json'),
+      qer: this.getData<QuantumExecutionResourceDto[]>('QuantumExecutionResources.json'),
+      compiler: this.getData('CompilersAndTranspilers.json'),
+      qcs: this.getData('CloudServices.json'),
+      sdk: this.getData('SoftwareDevelopmentKits.json')
+    };
+
+    this.expectedCalls = Object.keys(observables).length; // The number of calls we are doing
+
+    return new Promise<ApiModel>((resolve, reject) => {
+      for (const key in observables) {
+        observables[key].subscribe(value => this.updateAndResolve(value, key, resolve));
+      }
+    });
+  }
+
+
+  /**
+   * Checks whether the calls have finished and if so, fires resolve.
+   * @param value The value to set
+   * @param param The parameter in {@link API_STATE} to set.
+   * @param resolve The resolve function to call if the expected calls have been reached.
+   * @private
+   */
+  private updateAndResolve<T>(value: T, param: string, resolve: (a: ApiModel | PromiseLike<ApiModel>) => void): void {
+    API_STATE[param].next(value);
+    this.conductedCalls++;
+    if (this.conductedCalls >= this.expectedCalls) {
+      this.conductedCalls = 0;
+      resolve(API_STATE);
+    }
   }
 }

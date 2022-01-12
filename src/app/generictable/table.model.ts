@@ -1,5 +1,7 @@
-import {BehaviorSubject, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, ReplaySubject, Subject} from 'rxjs';
 import {MatTableDataSource} from '@angular/material/table';
+import {Entity, NameRepository} from '../common/repository';
+import {FilterService} from '../filter/filter.service';
 
 /**
  * This interface defines the model of a table. The model
@@ -41,13 +43,23 @@ export interface ColumnDefinition {
  * sets the hideTable initially to {@code false}. The dataSource
  * is given by the constructor.
  */
-export abstract class BaseTableModel<M> implements TableModel<M> {
+export abstract class BaseTableModel<M extends Entity> implements TableModel<M> {
   hideTable = new BehaviorSubject<boolean>(false);
-  dataSource;
+  dataSource = new ReplaySubject<MatTableDataSource<M>>();
+  currentDatasource: MatTableDataSource<M>;
   abstract columns;
 
-  constructor(initialValue: MatTableDataSource<M>) {
-    this.dataSource = new BehaviorSubject(initialValue);
+  private readonly subscriber = {
+    next: next => {
+      this.currentDatasource = new MatTableDataSource<M>(next);
+      this.dataSource.next(this.currentDatasource);
+    },
+    error: error => console.error('An error occurred during subscribing repository in table: ' + error),
+    complete: () => console.debug('Table build completed')
+  };
+
+  constructor(repository: NameRepository<M>) {
+    repository.asObservable().subscribe(this.subscriber);
   }
 
   /**
@@ -60,8 +72,29 @@ export abstract class BaseTableModel<M> implements TableModel<M> {
    */
   onCell(row: M, column: ColumnDefinition): string {
     if (Array.isArray(row[column.name])) {
-      return row[column.name].map(value => '<div class="element-in-table">' + value + '</div>').join('\n');
+      if (row[column.name].length > 0) {
+        return row[column.name].map(value => BaseTableModel.resolveReference(value)).join('<br/>\n');
+      } else {
+        return '-- none --';
+      }
     }
-    return row[column.name];
+    return BaseTableModel.resolveReference(row[column.name]);
   }
+
+  public connectToFilterService(filterEvent: Observable<M[]>, searchEvent: Observable<string>, showEvent: Observable<boolean>) {
+    filterEvent.subscribe(this.subscriber);
+    searchEvent.subscribe(search => this.currentDatasource.filter = search);
+    showEvent.subscribe(negate(this.hideTable));
+  }
+
+  private static resolveReference(obj: any): string {
+    if (obj instanceof Entity && !obj.isUndefined) {
+        return `<a href="#${obj.toString().trim()}" class="reference">${obj}</a>`;
+    }
+    return obj;
+  }
+}
+
+function negate(s: Subject<boolean>): (value: boolean) => void {
+  return value => s.next(!value);
 }

@@ -172,7 +172,8 @@ export function supportsOneOf(filterKeys: any[], array: any[]): boolean {
 export function getEnumFromString<T extends string>(enumArray: T[], str: string): T {
   const result = enumArray.find(value => value.toLowerCase() === str.toLowerCase());
   if (result === undefined) {
-      throw new TypeError(`The specified string is not a correct value: ${str}`);
+      console.error(`The specified string is not a correct value! ${str}`);
+      return str as T;
   }
   return result;
 }

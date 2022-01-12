@@ -19,20 +19,26 @@ export class SdksTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource<SoftwareDevelopmentKit>(this.sdkService.softwareDevelopmentKits);
-    this.sdkTableModel = new SdkTableModel(this.dataSource);
+    this.sdkTableModel = new SdkTableModel(this.sdkService);
+    this.sdkTableModel.connectToFilterService(this.filterService.sdkFilterEvent$, this.filterService.searchEvent$,
+      this.filterService.showSdkTable);
 
-    this.filterService.sdkFilterEvent$.subscribe(filter => {
-      this.sdkTableModel.dataSource.next(new MatTableDataSource(filter));
-    });
+    // this.sdkService.asObservable().subscribe(data => {
+    //   this.dataSource = new MatTableDataSource(data);
+    //   this.sdkTableModel.dataSource.next(this.dataSource);
+    // });
 
-    this.filterService.searchEvent$.subscribe(value => {
-      this.dataSource.filter = value;
-    });
-
-    this.filterService.showSdkTable.subscribe(value => {
-      this.sdkTableModel.hideTable.next(!value);
-    });
+    // this.filterService.sdkFilterEvent$.subscribe(filter => {
+    //   this.sdkTableModel.dataSource.next(new MatTableDataSource(filter));
+    // });
+    //
+    // this.filterService.searchEvent$.subscribe(value => {
+    //   this.sdkTableModel.currentDatasource.filter = value;
+    // });
+    //
+    // this.filterService.showSdkTable.subscribe(value => {
+    //   this.sdkTableModel.hideTable.next(!value);
+    // });
   }
 
   licensesClicked(license: string): void {

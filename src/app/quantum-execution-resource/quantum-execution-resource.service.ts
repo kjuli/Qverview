@@ -1,51 +1,33 @@
 import { Injectable } from '@angular/core';
 import { QuantumExecutionResource, QuantumExecutionResourceDto } from './quantum-execution-resource.model';
 // @ts-ignore
-import quantumExecutionResources from '../../../data/QuantumExecutionResources.json';
-import { FilterService } from '../filter/filter.service';
+import quantumExecutionResources from '../../../data/old/QuantumExecutionResources.json';
 import { QerFilterModel } from '../filter/qerFilter.model';
-import { QuantumCloudService } from '../quantum-cloud-service/quantum-cloud-service.model';
-import { QcsFilterModel } from '../filter/qcsFilter.model';
-import { Repository } from '../common/repository';
-import assert from 'assert';
+import {NameRepository, Repository} from '../common/repository';
+import API_STATE from '../api/api.model';
+import {QuantumCloudService} from '../quantum-cloud-service/quantum-cloud-service.model';
 
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class QuantumExecutionResourceService implements Repository<QuantumExecutionResource> {
-
-  private readonly quantumExecutionResourcesDto: QuantumExecutionResourceDto[] = quantumExecutionResources;
-  private cache: QuantumExecutionResource[];
+export class QuantumExecutionResourceService extends NameRepository<QuantumExecutionResource> {
 
   constructor() {
+    super('qer', QuantumExecutionResource.fromDto);
   }
 
-  get data(): QuantumExecutionResource[] {
-    return this.quantumExecutionResources;
-  }
+  // protected receiveData(): QuantumExecutionResource[] {
+  //   return API_STATE.qer.map(dto => QuantumExecutionResource.fromDto(dto));
+  // }
 
   get quantumExecutionResources(): QuantumExecutionResource[] {
-    if (this.cache !== null && this.cache !== undefined) {
-      return this.cache;
-    }
-
-    this.cache = this.quantumExecutionResourcesDto.map(value => QuantumExecutionResource.fromDto(value));
-    assert(this.cache !== undefined);
-    return this.cache;
+    return this.data;
   }
 
   getFilteredQers(qerFilter: QerFilterModel): QuantumExecutionResource[] {
     return this.quantumExecutionResources.filter(value => this.isActive(value, qerFilter));
-  }
-
-  findByName(name: string): QuantumExecutionResource | undefined {
-    return this.quantumExecutionResources.find(value => value.name === name);
-  }
-
-  findByID(id: string): QuantumExecutionResource | undefined {
-    return this.findByName(id);
   }
 
   isActive(qer: QuantumExecutionResource, filter: QerFilterModel): boolean {
@@ -63,4 +45,5 @@ export class QuantumExecutionResourceService implements Repository<QuantumExecut
     }
     return true;
   }
+
 }

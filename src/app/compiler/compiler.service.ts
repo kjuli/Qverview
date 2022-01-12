@@ -1,28 +1,27 @@
 import { Injectable } from '@angular/core';
 import { Compiler } from './compiler.model';
 // @ts-ignore
-import compilersAndTranspilersJson from '../../../data/CompilersAndTranspilers.json';
+import compilersAndTranspilersJson from '../../../data/old/CompilersAndTranspilers.json';
 import { QuantumCloudService } from '../quantum-cloud-service/quantum-cloud-service.model';
 import {FilterService, supportsOneOf} from '../filter/filter.service';
 import { CompilerFilterModel } from '../filter/compilerFilter.model';
 import {NameRepository} from "../common/repository";
 import {SdkService} from "../sdk/sdk.service";
 import {ProgrammingLanguageService} from "../programming-language/programming-language.service";
+import API_STATE from '../api/api.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompilerService extends NameRepository<Compiler> {
 
-  private readonly compilerDto = compilersAndTranspilersJson;
-
   constructor(private sdkService: SdkService, private languageService: ProgrammingLanguageService) {
-    super();
+    super('compiler', data => Compiler.fromDto(data, sdkService, languageService));
   }
 
-  protected receiveData(): Compiler[] {
-    return this.compilerDto.map(value => Compiler.fromDto(value, this.sdkService, this.languageService));
-  }
+  // protected receiveData(): Compiler[] {
+  //   return API_STATE.compilers.map(value => Compiler.fromDto(value, this.sdkService, this.languageService));
+  // }
 
   get compilers(): Compiler[] {
     return this.data;

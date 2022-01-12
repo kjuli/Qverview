@@ -1,4 +1,4 @@
-import { Entity } from "../common/repository";
+import {Entity} from '../common/repository';
 import { getEnumFromString } from "../filter/filter.service";
 
 export interface ProgrammingLanguageDto {
@@ -89,10 +89,7 @@ export type AssemblyProgrammingLanguage = SpecificLanguageType<ProgrammingType.A
  */
 export function getAsHighlevelProgrammingLanguage(language: ProgrammingLanguage): HighLevelProgrammingLanguage {
   // Fallback: If undefined, simply return undefined.
-  if (language === undefined) {
-    return undefined;
-  }
-  if (language.type !== ProgrammingType.HighLevel) {
+  if (!language.isUndefined && language.type !== ProgrammingType.HighLevel) {
     throw new TypeError(`This is not a high level programming language: ${language}`);
   }
   return language as HighLevelProgrammingLanguage;
@@ -105,12 +102,15 @@ export function getAsHighlevelProgrammingLanguage(language: ProgrammingLanguage)
  * @param language The language to be converted.
  */
 export function getAsAssemblyLanguage(language: ProgrammingLanguage): AssemblyProgrammingLanguage {
-  if (language === undefined) {
-    return undefined;
-  }
-  if (language.type !== ProgrammingType.Assembly) {
+  if (!language.isUndefined && language.type !== ProgrammingType.Assembly) {
     throw new TypeError(`This is not an assembly language: ${language}`);
   }
 
   return language as AssemblyProgrammingLanguage;
 }
+
+/**
+ * This type allows to specify an array of programming languages that only
+ * work together for a specific purpose.
+ */
+export type LanguageCombination = ProgrammingLanguage[];

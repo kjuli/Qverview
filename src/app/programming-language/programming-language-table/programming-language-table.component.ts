@@ -18,19 +18,21 @@ export class ProgrammingLanguageTableComponent implements OnInit {
   constructor(private programmingLanguageService: ProgrammingLanguageService, private filterService: FilterService) { }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource<ProgrammingLanguage>(this.programmingLanguageService.programmingLanguages);
-    this.plTableModel = new PlTableModel(this.dataSource);
-
-    this.filterService.qplFilterEvent$.subscribe(filter => {
-      this.dataSource = new MatTableDataSource(filter);
-      this.plTableModel.dataSource.next(this.dataSource);
-    });
-
-    this.filterService.searchEvent$.subscribe(value => {
-      this.dataSource.filter = value;
-    });
-
-    this.filterService.showPLTable.subscribe(value => this.plTableModel.hideTable.next(!value));
+    this.plTableModel = new PlTableModel(this.programmingLanguageService);
+    this.plTableModel.connectToFilterService(this.filterService.qplFilterEvent$, this.filterService.searchEvent$, this.filterService.showPLTable);
+    // this.dataSource = new MatTableDataSource<ProgrammingLanguage>(this.programmingLanguageService.programmingLanguages);
+    // this.plTableModel = new PlTableModel(this.dataSource);
+    //
+    // this.filterService.qplFilterEvent$.subscribe(filter => {
+    //   this.dataSource = new MatTableDataSource(filter);
+    //   this.plTableModel.dataSource.next(this.dataSource);
+    // });
+    //
+    // this.filterService.searchEvent$.subscribe(value => {
+    //   this.dataSource.filter = value;
+    // });
+    //
+    // this.filterService.showPLTable.subscribe(value => this.plTableModel.hideTable.next(!value));
   }
 
   nameClicked(name: string): void {

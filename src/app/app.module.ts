@@ -35,6 +35,7 @@ import {TableComponent} from './generictable/table.component';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import { RepositoryDialogComponent } from './repository-dialog/repository-dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import { SplashComponent } from './splash/splash.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import {MatDialogModule} from "@angular/material/dialog";
     IndexComponent,
     LanguageGraphComponent,
     TableComponent,
-    RepositoryDialogComponent
+    RepositoryDialogComponent,
+    SplashComponent,
   ],
   imports: [
     AppRoutingModule,

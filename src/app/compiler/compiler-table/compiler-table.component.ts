@@ -18,19 +18,22 @@ export class CompilerTableComponent implements OnInit {
   constructor(private compilerService: CompilerService, private filterService: FilterService) { }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource<Compiler>(this.compilerService.compilers);
-    this.compilerTableModel = new CompilerTableModel(this.dataSource);
+    this.compilerTableModel = new CompilerTableModel(this.compilerService);
+    this.compilerTableModel.connectToFilterService(this.filterService.compilerFilterEvent$, this.filterService.searchEvent$, this.filterService.showCompilerTable);
 
-    this.filterService.compilerFilterEvent$.subscribe(filter => {
-      this.dataSource = new MatTableDataSource(filter);
-      this.compilerTableModel.dataSource.next(this.dataSource);
-    });
-
-    this.filterService.searchEvent$.subscribe(value => {
-      this.dataSource.filter = value;
-    });
-
-    this.filterService.showCompilerTable.subscribe(value => this.compilerTableModel.hideTable.next(!value));
+    // this.dataSource = new MatTableDataSource<Compiler>(this.compilerService.compilers);
+    // this.compilerTableModel = new CompilerTableModel(this.dataSource);
+    //
+    // this.filterService.compilerFilterEvent$.subscribe(filter => {
+    //   this.dataSource = new MatTableDataSource(filter);
+    //   this.compilerTableModel.dataSource.next(this.dataSource);
+    // });
+    //
+    // this.filterService.searchEvent$.subscribe(value => {
+    //   this.dataSource.filter = value;
+    // });
+    //
+    // this.filterService.showCompilerTable.subscribe(value => this.compilerTableModel.hideTable.next(!value));
   }
 
 }

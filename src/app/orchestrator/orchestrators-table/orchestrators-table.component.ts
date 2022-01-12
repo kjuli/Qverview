@@ -19,19 +19,21 @@ export class OrchestratorsTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource<Orchestrator>(this.orchestratorService.orchestrators);
-    this.oTableModel = new OTableModel(this.dataSource);
-
-    this.filterService.orchestratorFilterEvent$.subscribe(filter => {
-      this.dataSource = new MatTableDataSource(filter);
-      this.oTableModel.dataSource.next(this.dataSource);
-    });
-
-    this.filterService.searchEvent$.subscribe(value => {
-      this.dataSource.filter = value;
-    });
-
-    this.filterService.showOTable.subscribe(value => this.oTableModel.hideTable.next(!value));
+    this.oTableModel = new OTableModel(this.orchestratorService);
+    this.oTableModel.connectToFilterService(this.filterService.orchestratorFilterEvent$, this.filterService.searchEvent$, this.filterService.showOTable);
+    // this.dataSource = new MatTableDataSource<Orchestrator>(this.orchestratorService.orchestrators);
+    // this.oTableModel = new OTableModel(this.dataSource);
+    //
+    // this.filterService.orchestratorFilterEvent$.subscribe(filter => {
+    //   this.dataSource = new MatTableDataSource(filter);
+    //   this.oTableModel.dataSource.next(this.dataSource);
+    // });
+    //
+    // this.filterService.searchEvent$.subscribe(value => {
+    //   this.dataSource.filter = value;
+    // });
+    //
+    // this.filterService.showOTable.subscribe(value => this.oTableModel.hideTable.next(!value));
   }
 
 }

@@ -20,21 +20,24 @@ export class QuantumCloudServicesTableComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource(this.qcsService.quantumCloudServices);
-    this.qcsTableModel = new QcsTableModel(this.dataSource);
+    this.qcsTableModel = new QcsTableModel(this.qcsService);
+    this.qcsTableModel.connectToFilterService(this.filterService.qcsFilterEvent$, this.filterService.searchEvent$, this.filterService.showQCSTable);
 
-    this.filterService.qcsFilterEvent$.subscribe(filter => {
-      this.dataSource = new MatTableDataSource(filter);
-      this.qcsTableModel.dataSource.next(this.dataSource);
-    });
-
-    this.filterService.searchEvent$.subscribe(value => {
-      this.dataSource.filter = value;
-    });
-
-    this.filterService.showQCSTable.subscribe(value => {
-      this.qcsTableModel.hideTable.next(!value);
-    });
+    // this.dataSource = new MatTableDataSource(this.qcsService.quantumCloudServices);
+    // this.qcsTableModel = new QcsTableModel(this.dataSource);
+    //
+    // this.filterService.qcsFilterEvent$.subscribe(filter => {
+    //   this.dataSource = new MatTableDataSource(filter);
+    //   this.qcsTableModel.dataSource.next(this.dataSource);
+    // });
+    //
+    // this.filterService.searchEvent$.subscribe(value => {
+    //   this.dataSource.filter = value;
+    // });
+    //
+    // this.filterService.showQCSTable.subscribe(value => {
+    //   this.qcsTableModel.hideTable.next(!value);
+    // });
   }
 }
 
