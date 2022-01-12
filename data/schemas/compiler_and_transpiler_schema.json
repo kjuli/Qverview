@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "qverview/schemas/compiler_and_transpiler_schema.json",
+  "title": "Compiler and Transpiler",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "name": { "type": "string" },
+      "inputLanguages": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            { "type": "string" },
+            { "type": "object",
+              "properties": {
+                "sdk": { "type": "string" },
+                "programmingLanguage": { "type": "string" }
+              },
+              "requires": ["sdk", "programmingLanguage"]
+            }
+          ]
+        }
+      },
+      "outputLanguages": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            { "type": "string" },
+            { "type": "object",
+              "properties": {
+                "sdk": { "type": "string" },
+                "programmingLanguage": { "type": "string" }
+              },
+              "requires": ["sdk", "programmingLanguage"]
+            }
+          ]
+        }
+      },
+      "optimizationStrategies": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["hardware-specific", "hardware-independent"]
+        },
+        "uniqueItems": true
+      }
+    }
+  }
+}

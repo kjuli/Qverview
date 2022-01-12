@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "qverview/schemas/cloud_services_schema.json",
+  "title": "Qverview Cloud Services",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "accessMethods": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["SDK", "GUI", "REST", "CLI", "SDK(3rd)", "GUI(3rd)", "REST(3rd)", "CLI(3rd)"]
+        }
+      },
+      "serviceModel": {
+        "type": "string",
+        "enum": ["QCaaS", "PaaS/SaaS"]
+      },
+      "resources": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "assemblyLanguages": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "required": ["name","accessMethods","serviceModel","resources","assemblyLanguages"]
+  }
+}

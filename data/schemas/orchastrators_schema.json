@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "qverview/schemas/orchastrators_schema.json",
+  "title": "Qverview Orchastrator",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "name": { "type": "string" },
+      "licenses": {
+        "type": "array",
+        "items": {"type": "string"},
+        "uniqueItems": true
+      },
+      "programmingLanguages": {
+        "type": "array",
+        "items": {"type": "string"},
+        "uniqueItems": true
+      },
+      "activeDevelopment": {"type": "boolean"},
+      "productionReady": {"type": "boolean"}
+    }
+  }
+}

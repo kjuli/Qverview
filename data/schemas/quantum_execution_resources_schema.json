@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "qverview/schemas/quantum_execution_resources_schema.json",
+  "title": "Quantum Execution Resources",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "name": {"type": "string"},
+      "executionType": {
+        "type": "string",
+        "enum": ["QPU", "Simulator"]
+      },
+      "computationModel": {
+        "type": "string",
+        "enum": ["Circuit-Model", "Annealing"]
+      },
+      "vendor": { "type":  "string" }
+    }
+  }
+}

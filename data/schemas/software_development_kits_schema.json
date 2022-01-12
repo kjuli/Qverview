@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "qverview/schemas/programming_languages_schema.json",
+  "title": "Qverview Software Development Kits",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "name": { "type": "string" },
+      "licenses": {
+        "type": "array",
+        "items": {"type": "string"},
+        "uniqueItems": true
+      },
+      "programmingLanguages": {
+        "type": "array",
+        "items": {"type": "string"},
+        "uniqueItems": true
+      },
+      "compilerInputLanguages": {
+        "type": "array",
+        "items": {
+          "anyOf": [
+            {"type": "string"},
+            {"type": "array", "items": {"type": "string"}},
+            {
+              "type": "object",
+              "properties": {
+                "assemblyLanguage": {"type": "string"},
+                "flavour": {"type": "string"}
+              }
+            },
+            {
+              "type": "object",
+              "properties": {
+                "sdk": {"type": "string"},
+                "highLevelProgrammingLanguage": {"type": "string"}
+              }
+            }
+          ]
+        },
+        "uniqueItems": true
+      },
+      "compilerOutputLanguages": {
+        "type": "array",
+        "items": {
+          "anyOf": [
+            {"type": "string"},
+            {"type": "array", "items": {"type": "string"}},
+            {
+              "type": "object",
+              "properties": {
+                "assemblyLanguage": {"type": "string"},
+                "flavour": {"type": "string"}
+              }
+            },
+            {
+              "type": "object",
+              "properties": {
+                "sdk": {"type": "string"},
+                "highLevelProgrammingLanguage": {"type": "string"}
+              }
+            }
+          ]
+        },
+        "uniqueItems": true
+      },
+      "compilerOptimizationStrategies": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["hardware-specific", "hardware-independent"]
+        },
+        "uniqueItems": true
+      },
+      "supportedQuantumCloudServices": {
+        "type": "array",
+        "items": {"type": "string"},
+        "uniqueItems": true
+      },
+      "activeDevelopment": {"type": "boolean"},
+      "localSimulator": {"type": "boolean"}
+    },
+    "required": ["activeDevelopment", "localSimulator", "supportedQuantumCloudServices", "compilerOptimizationStrategies", "compilerOutputLanguages", "compilerInputLanguages", "programmingLanguages", "licenses", "name"]
+  }
+}

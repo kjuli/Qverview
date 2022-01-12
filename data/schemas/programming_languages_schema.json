@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "qverview/schemas/programming_languages_schema.json",
+  "title": "Programming Languages",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "type": {
+        "type": "string",
+        "enum": ["Workflow Language", "High-Level Programming Language", "Assembly Language"]
+      },
+      "syntaxImplementation": {
+        "type": "string",
+        "enum": ["Standalone", "Embedded"]
+      },
+      "standardization": {
+        "type": "string",
+        "enum": ["Proprietary", "Open Standard", "None"]
+      }
+    },
+    "required": ["name", "type", "syntaxImplementation", "standardization"]
+  }
+}
