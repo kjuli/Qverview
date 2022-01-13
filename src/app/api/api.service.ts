@@ -17,13 +17,15 @@ import {SplashscreenStateService} from '../splash/splashscreen-state.service';
   providedIn: 'root'
 })
 export class ApiService {
+  public static readonly DEFAULT_BRANCH = 'https://raw.githubusercontent.com/kjuli/QverviewData/master';
+
   private expectedCalls: number;
   private conductedCalls = 0;
 
   /**
    * The base url.
    */
-  baseUrl: string = 'https://raw.githubusercontent.com/kjuli/Qverview/master/data';
+  baseUrl: string = ApiService.DEFAULT_BRANCH;
 
   constructor(private httpClient: HttpClient, private splashScreenService: SplashscreenStateService) { }
 
