@@ -25,6 +25,9 @@
   position: absolute;
   overflow: hidden;
   max-width: 7em;
+  height: 1em;
+  top: -1em;
+  padding-top: 1em;
   white-space: nowrap;
   color: #fff;
   animation: loading 8s linear;
