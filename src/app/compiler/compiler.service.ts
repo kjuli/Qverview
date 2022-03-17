@@ -8,15 +8,15 @@ import { CompilerFilterModel } from '../filter/compilerFilter.model';
 import {NameRepository} from "../common/repository";
 import {SdkService} from "../sdk/sdk.service";
 import {ProgrammingLanguageService} from "../programming-language/programming-language.service";
-import API_STATE from '../api/api.model';
+import REPOSITORY_STATE from '../repository/repositoryModel';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompilerService extends NameRepository<Compiler> {
 
-  constructor(private sdkService: SdkService, private languageService: ProgrammingLanguageService) {
-    super('compiler', data => Compiler.fromDto(data, sdkService, languageService));
+  constructor( private languageService: ProgrammingLanguageService) {
+    super('compiler', data => Compiler.fromDto(data, languageService));
   }
 
   // protected receiveData(): Compiler[] {

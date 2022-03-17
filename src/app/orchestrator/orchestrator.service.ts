@@ -8,7 +8,7 @@ import { ProgrammingLanguage } from '../programming-language/programming-languag
 import {NameRepository} from "../common/repository";
 import {ProgrammingLanguageService} from "../programming-language/programming-language.service";
 import {supportsOneOf} from "../filter/filter.service";
-import API_STATE from '../api/api.model';
+import REPOSITORY_STATE from '../repository/repositoryModel';
 
 @Injectable({
   providedIn: 'root'

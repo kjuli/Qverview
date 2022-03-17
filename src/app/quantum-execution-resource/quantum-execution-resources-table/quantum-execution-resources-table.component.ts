@@ -57,8 +57,8 @@ export class QuantumExecutionResourcesTableComponent implements OnInit {
 class QerTableModel extends BaseTableModel<QuantumExecutionResource> {
   columns = [
     {name: 'name', label: 'Quantum Execution Resources'},
-    {name: 'executionType'},
-    {name: 'computationModel'},
-    {name: 'vendor'}
+    {name: 'executionType', filterValue: 'executionTypes'},
+    {name: 'computationModel', filterValue: 'computationModels'},
+    {name: 'vendor', filterValue: 'vendors'}
   ];
 }

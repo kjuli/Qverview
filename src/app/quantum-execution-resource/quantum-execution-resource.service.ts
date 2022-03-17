@@ -4,7 +4,7 @@ import { QuantumExecutionResource, QuantumExecutionResourceDto } from './quantum
 import quantumExecutionResources from '../../../data/old/QuantumExecutionResources.json';
 import { QerFilterModel } from '../filter/qerFilter.model';
 import {NameRepository, Repository} from '../common/repository';
-import API_STATE from '../api/api.model';
+import REPOSITORY_STATE from '../repository/repositoryModel';
 import {QuantumCloudService} from '../quantum-cloud-service/quantum-cloud-service.model';
 
 

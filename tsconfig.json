@@ -18,7 +18,7 @@
     ],
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": true
     /* "strictNullChecks": true /* <- We should really consider using this. Currently there are some bugs when enabling it. */
-  }
+  },
 }

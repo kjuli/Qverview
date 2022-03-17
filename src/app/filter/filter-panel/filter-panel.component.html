@@ -1,0 +1,22 @@
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            {{title}}
+        </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <form>
+        <ng-container *ngFor="let f of fields">
+            <mat-form-field>
+                <mat-label>{{f.label}}</mat-label>
+                <mat-select class="select" [id]="f.field" (selectionChange)="selectionChange($event, f.field)" multiple>
+                    <mat-option *ngFor="let option of filterService.centralData[f.field]" [value]="option">{{option}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button mat-icon-button class="clear-button" (click)="clear(f)">
+                <mat-icon class="clear-button-icon smaller">backspace</mat-icon>
+            </button>
+            <br/>
+        </ng-container>
+    </form>
+</mat-expansion-panel>

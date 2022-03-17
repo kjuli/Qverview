@@ -10,7 +10,7 @@
  * @param ID The type of the ID of the data. Defaults to string.
  */
 import {BehaviorSubject, Observable, ReplaySubject, Subject} from 'rxjs';
-import API_STATE from '../api/api.model';
+import REPOSITORY_STATE from '../repository/repositoryModel';
 
 export interface Repository<T extends Entity, ID = string> {
     /**
@@ -34,6 +34,9 @@ export abstract class Entity {
      * The unique name of the instance.
      */
     name: string;
+    link?: string;
+    references?: object;
+    description?: string;
     isUndefined = false;
 
     toString(): string {
@@ -44,6 +47,24 @@ export abstract class Entity {
         }
     }
 }
+
+export interface BaseDto {
+    name: string;
+    link?: string;
+    _references?: object;
+    description?: string;
+}
+
+/**
+ * Each thing might have a reference. This is done in the data model.
+ */
+export type Reference<Base> = Base | {
+    reference: {
+        name ?: string;
+        link: string;
+    };
+    data: Base;
+};
 
 export class UnknownEntity extends Entity {
   readonly isUndefined = true;
@@ -57,17 +78,17 @@ export abstract class NameRepository<T extends Entity> implements Repository<T> 
     private cache: T[];
     private observable: Subject<T[]> = new ReplaySubject<T[]>(1);
 
-    constructor(private apiStr?: string, convert?: (data: any) => T) {
-      if (apiStr && API_STATE[apiStr] && convert) {
-        API_STATE[apiStr].subscribe(this.subscribeApiStr(convert));
-      } else if (apiStr && !API_STATE[apiStr]) {
-        console.log('wrong api state id: ' + apiStr);
+    constructor(private repositoryFilename?: string, convert?: (data: any) => T) {
+      if (repositoryFilename && REPOSITORY_STATE[repositoryFilename] && convert) {
+        REPOSITORY_STATE[repositoryFilename].subscribe(this.subscribeApiStr(convert));
+      } else if (repositoryFilename && !REPOSITORY_STATE[repositoryFilename]) {
+        console.log('wrong api state id: ' + repositoryFilename);
       }
     }
 
     private subscribeApiStr(convert: (data: any) => T): (value: any) => void {
       return value => {
-        console.log('Called API! ' + this.apiStr);
+        console.log('Called API! ' + this.repositoryFilename);
         this.cache = value.map(convert);
         this.observable.next(this.cache);
       };

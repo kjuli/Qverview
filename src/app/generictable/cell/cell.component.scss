@@ -1,0 +1,26 @@
+a {
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a.normal {
+  color: blue;
+  text-decoration: underline;
+}
+
+a.reference {
+  font-weight: bold;
+}
+
+a.cell {
+  border-radius: 2px;
+  padding: 0 5px;
+}
+
+a.undefinedCell {
+  border: 1px red solid;
+  border-radius: 2px;
+  background: #FFF !important;
+  padding: 0 5px;
+}

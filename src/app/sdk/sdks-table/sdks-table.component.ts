@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SdkService } from '../sdk.service';
 import { FilterService } from '../../filter/filter.service';
-import { SoftwareDevelopmentKit } from '../sdk.model';
+import {getLicenseColorCode, SoftwareDevelopmentKit} from '../sdk.model';
 import {BaseTableModel} from '../../generictable/table.model';
 
 @Component({
@@ -73,14 +73,16 @@ export class SdksTableComponent implements OnInit {
 class SdkTableModel extends BaseTableModel<SoftwareDevelopmentKit> {
 
   columns = [
-    {name: 'name', label: 'Software Development Kit'},
-    {name: 'licenses'},
-    {name: 'programmingLanguages'},
-    {name: 'compilerInputLanguages'},
-    {name: 'compilerOutputLanguages'},
-    {name: 'compilerOptimizationStrategies'},
-    {name: 'supportedQuantumCloudServices'},
-    {name: 'activeDevelopment'},
-    {name: 'localSimulator'}
+    {name: 'name', label: 'Software Development Kit', filterValue: 'sdks'},
+    {name: 'licenses', filterValue: 'licenses'},
+    {name: 'programmingLanguages', filterValue: 'languages'},
+    // {name: 'compilerInputLanguages'},
+    // {name: 'compilerOutputLanguages'},
+    // {name: 'compilerOptimizationStrategies'},
+    // Should be the following instead:
+    {name: 'compiler'},
+    {name: 'supportedQuantumCloudServices', filterValue: 'quantumCloudServices'},
+    //{name: 'activeDevelopment'},
+    //{name: 'localSimulator'}
   ];
 }

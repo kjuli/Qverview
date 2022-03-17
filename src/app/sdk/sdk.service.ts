@@ -7,8 +7,9 @@ import { QcsService } from '../quantum-cloud-service/qcs.service';
 import { ProgrammingLanguageService } from '../programming-language/programming-language.service';
 import { supportsOneOf } from '../filter/filter.service';
 import {NameRepository, Repository} from '../common/repository';
-import {ApiService} from "../api/api.service";
+import {RepositoryService} from "../repository/repository.service";
 import {Observable} from "rxjs";
+import {CompilerService} from '../compiler/compiler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,10 @@ import {Observable} from "rxjs";
 export class SdkService extends NameRepository<SoftwareDevelopmentKit> {
   //private readonly sdks: SdkDto[] = softwareDevelopmentKitsJson;
 
-  constructor(private readonly qcsService: QcsService, private readonly languageService: ProgrammingLanguageService) {
-    super('sdk', data => SoftwareDevelopmentKit.fromDto(data, languageService, qcsService));
+  constructor(private readonly qcsService: QcsService,
+              private readonly languageService: ProgrammingLanguageService,
+              private readonly compilerService: CompilerService) {
+    super('sdk', data => SoftwareDevelopmentKit.fromDto(data, languageService, qcsService, compilerService));
   }
 
   get softwareDevelopmentKits(): SoftwareDevelopmentKit[] {
@@ -43,24 +46,24 @@ export class SdkService extends NameRepository<SoftwareDevelopmentKit> {
     if (!supportsOneOf(filter.programmingLanguages, sdk.programmingLanguages)) {
       result = false;
     }
-    if (!supportsOneOf(filter.compilerInputLanguages, sdk.compilerInputLanguages)) {
-      result = false;
-    }
-    if (!supportsOneOf(filter.compilerOutputLanguages, sdk.compilerOutputLanguages)) {
-      result = false;
-    }
-    if (!supportsOneOf(filter.compilerOptimizationStrategies, sdk.compilerOptimizationStrategies)) {
-      result = false;
-    }
-    if (filter.activeDevelopment.length > 0 && !filter.activeDevelopment.includes(sdk.activeDevelopment)) {
-      result = false;
-    }
-    if (!supportsOneOf(filter.supportedQuantumCloudServices, sdk.supportedQuantumCloudServices)) {
-      result = false;
-    }
-    if (filter.localSimulator.length > 0 && filter.localSimulator.includes(sdk.localSimulator)) {
-      result = false;
-    }
+    // if (!supportsOneOf(filter.compilerInputLanguages, sdk.compilerInputLanguages)) {
+    //   result = false;
+    // }
+    // if (!supportsOneOf(filter.compilerOutputLanguages, sdk.compilerOutputLanguages)) {
+    //   result = false;
+    // }
+    // if (!supportsOneOf(filter.compilerOptimizationStrategies, sdk.compilerOptimizationStrategies)) {
+    //   result = false;
+    // }
+    // if (filter.activeDevelopment.length > 0 && !filter.activeDevelopment.includes(sdk.activeDevelopment)) {
+    //   result = false;
+    // }
+    // if (!supportsOneOf(filter.supportedQuantumCloudServices, sdk.supportedQuantumCloudServices)) {
+    //   result = false;
+    // }
+    // if (filter.localSimulator.length > 0 && filter.localSimulator.includes(sdk.localSimulator)) {
+    //   result = false;
+    // }
 
     return result;
   }

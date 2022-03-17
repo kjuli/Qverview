@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from '../api/api.service';
+import {RepositoryService} from '../repository/repository.service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -11,7 +11,7 @@ export class RepositoryDialogComponent implements OnInit {
 
   repositoryUrl: string;
 
-  constructor(private apiService: ApiService, private router: Router) { }
+  constructor(private apiService: RepositoryService, private router: Router) { }
 
   ngOnInit(): void {
   }

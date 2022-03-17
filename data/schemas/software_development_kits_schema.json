@@ -17,59 +17,19 @@
         "items": {"type": "string"},
         "uniqueItems": true
       },
-      "compilerInputLanguages": {
+      "compiler": {
         "type": "array",
         "items": {
-          "anyOf": [
+          "oneOf": [
             {"type": "string"},
-            {"type": "array", "items": {"type": "string"}},
-            {
-              "type": "object",
-              "properties": {
-                "assemblyLanguage": {"type": "string"},
-                "flavour": {"type": "string"}
-              }
-            },
-            {
-              "type": "object",
-              "properties": {
-                "sdk": {"type": "string"},
-                "highLevelProgrammingLanguage": {"type": "string"}
-              }
+            {"type": "object",
+             "properties": {
+               "compiler": { "type": "string" },
+               "flavor": { "type": "string" }
+             },
+             "requires": ["compiler", "flavor"]
             }
           ]
-        },
-        "uniqueItems": true
-      },
-      "compilerOutputLanguages": {
-        "type": "array",
-        "items": {
-          "anyOf": [
-            {"type": "string"},
-            {"type": "array", "items": {"type": "string"}},
-            {
-              "type": "object",
-              "properties": {
-                "assemblyLanguage": {"type": "string"},
-                "flavour": {"type": "string"}
-              }
-            },
-            {
-              "type": "object",
-              "properties": {
-                "sdk": {"type": "string"},
-                "highLevelProgrammingLanguage": {"type": "string"}
-              }
-            }
-          ]
-        },
-        "uniqueItems": true
-      },
-      "compilerOptimizationStrategies": {
-        "type": "array",
-        "items": {
-          "type": "string",
-          "enum": ["hardware-specific", "hardware-independent"]
         },
         "uniqueItems": true
       },
@@ -81,6 +41,6 @@
       "activeDevelopment": {"type": "boolean"},
       "localSimulator": {"type": "boolean"}
     },
-    "required": ["activeDevelopment", "localSimulator", "supportedQuantumCloudServices", "compilerOptimizationStrategies", "compilerOutputLanguages", "compilerInputLanguages", "programmingLanguages", "licenses", "name"]
+    "required": ["activeDevelopment", "localSimulator", "supportedQuantumCloudServices", "compiler", "programmingLanguages", "licenses", "name"]
   }
 }

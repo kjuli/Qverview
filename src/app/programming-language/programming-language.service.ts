@@ -6,7 +6,7 @@ import { QerFilterModel } from '../filter/qerFilter.model';
 import { QuantumExecutionResource } from '../quantum-execution-resource/quantum-execution-resource.model';
 import { QplFilterModel } from '../filter/qplFilter.model';
 import {NameRepository, Repository} from '../common/repository';
-import API_STATE from '../api/api.model';
+import REPOSITORY_STATE from '../repository/repositoryModel';
 
 @Injectable({
   providedIn: 'root'

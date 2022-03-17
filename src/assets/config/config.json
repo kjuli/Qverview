@@ -1,0 +1,21 @@
+{
+  "colors": {
+    "licenses": "rgb(121, 247, 211)",
+    "programmingLanguages": "rgb(126,155,96)",
+    "supportedQuantumCloudServices": "rgb(255,200,200)",
+    "compiler": "rgb(30,249,130)",
+    "accessMethods": "rgb(125,150,240)",
+    "serviceModel": "rgb(170,170,230)",
+    "assemblyLanguages": "rgb(200,200,200)",
+    "executionType": "rgb(130,240,130)",
+    "computationModel": "rgb(240,200,150)",
+    "vendor": "rgb(125,125,125)",
+    "type": "rgb(149,189,229)",
+    "syntaxImplementation": "rgb(200,190,180)",
+    "optimizationStrategies": "rgb(180,190,200)"
+  },
+  "defaultRepository": "http://localhost:8887",
+  "references": [
+    "assets/references/bibliography.bib"
+  ]
+}

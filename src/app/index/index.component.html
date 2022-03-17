@@ -1,9 +1,18 @@
 <mat-sidenav-container id="main">
   <mat-sidenav disableClose="true" mode="side" opened style="position: fixed;">
-    <!--<app-filter></app-filter>-->
+   <app-filter></app-filter>
   </mat-sidenav>
 
   <mat-sidenav-content>
+    <div id="search-bar" style="margin: 10px">
+      <form>
+        <mat-form-field style="width: 100%;">
+          <span matPrefix></span>
+          <input type="text" matInput placeholder="Search" name="search">
+          <button matSuffix mat-button><mat-icon>search</mat-icon></button>
+        </mat-form-field>
+      </form>
+    </div>
     <div id="tables-wrapper">
       <app-sdks-table id="sdks"></app-sdks-table>
       <app-quantum-cloud-services-table id="qcs"></app-quantum-cloud-services-table>

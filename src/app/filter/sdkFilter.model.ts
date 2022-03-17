@@ -9,10 +9,4 @@ export interface SdkFilterModel {
   names: SoftwareDevelopmentKit[];
   licenses: License[];
   programmingLanguages: HighLevelProgrammingLanguage[];
-  compilerInputLanguages: AssemblyProgrammingLanguage[];
-  compilerOutputLanguages: AssemblyProgrammingLanguage[];
-  compilerOptimizationStrategies: CompilerOptimizationStrategy[];
-  activeDevelopment: boolean[];
-  supportedQuantumCloudServices: QuantumCloudService[];
-  localSimulator: boolean[];
 }

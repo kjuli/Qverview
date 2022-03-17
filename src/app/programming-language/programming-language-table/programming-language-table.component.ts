@@ -55,8 +55,8 @@ export class ProgrammingLanguageTableComponent implements OnInit {
 class PlTableModel extends BaseTableModel<ProgrammingLanguage> {
   columns = [
     {name: 'name', label: 'Programming Languages'},
-    {name: 'type'},
-    {name: 'syntaxImplementation'},
-    {name: 'standardization'}
+    {name: 'type', filterValue: 'qplTypes'},
+    {name: 'syntaxImplementation', filterValue: 'qplSyntaxImplementations'},
+    {name: 'standardization', filterValue: 'qplStandardizations'}
   ];
 }

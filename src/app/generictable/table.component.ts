@@ -1,7 +1,8 @@
 import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
-import {TableModel} from './table.model';
+import {ColumnDefinition, TableModel} from './table.model';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
+import {AppConfigService} from '../config/app-config.service';
 
 /**
  * This component is a generic table that all data about Quantum services, SDKs, etc.
@@ -63,5 +64,19 @@ export class TableComponent implements OnInit, AfterViewInit {
     return result.charAt(0).toUpperCase() + result.slice(1);
   }
 
+  isArray(a: any): boolean {
+    return Array.isArray(a);
+  }
 
+  getColorCodeFromColumn(row, column: ColumnDefinition): string | undefined {
+    const color = AppConfigService.settings.colors[column.name];
+    return color;
+  }
+
+  onlyIfName(columnName: string, link?: string): string | undefined {
+    if (columnName === 'name') {
+      return link;
+    }
+    return undefined;
+  }
 }

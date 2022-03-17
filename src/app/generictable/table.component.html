@@ -6,7 +6,26 @@
         <ng-template #standardName><span>{{convertCamelCaseToSentence(column.name)}}</span></ng-template>
       </th>
       <td mat-cell *matCellDef="let row">
-        <div class="element-in-table" (click)="tableDefinition.onCell(row, column)" [innerHTML]="tableDefinition.onCell(row, column)">
+        <div class="element-in-table">
+<!--          <ng-container *ngIf="isArray(row[column.name]); else nonArray">-->
+<!--            <ng-container *ngIf="row[column.name].length > 0; else emptyArray">-->
+<!--              <div *ngFor="let cell of row[column.name]">-->
+<!--                <app-cell [value]="cell"></app-cell>-->
+<!--              </div>-->
+<!--            </ng-container>-->
+<!--            <ng-template #emptyArray>-->
+<!--              <app-cell [value]="'&#45;&#45; none &#45;&#45;'"></app-cell>-->
+<!--            </ng-template>-->
+<!--          </ng-container>-->
+<!--          <ng-template #nonArray>-->
+<!--            <app-cell [value]="row[column.name]"></app-cell>-->
+<!--          </ng-template>-->
+          <app-cell [value]="row[column.name]"
+                    [isID]="column.name === 'name'"
+                    [color]="getColorCodeFromColumn(row, column)"
+                    [filterValue]="column.filterValue"
+                    [table]="tableDefinition"
+                    [parent]="row"></app-cell>
         </div>
       </td>
     </ng-container>

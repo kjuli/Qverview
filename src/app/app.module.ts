@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
@@ -36,6 +36,17 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
 import { RepositoryDialogComponent } from './repository-dialog/repository-dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import { SplashComponent } from './splash/splash.component';
+import { CellComponent } from './generictable/cell/cell.component';
+import {AppConfig} from './config/app-config.model';
+import {AppConfigService} from './config/app-config.service';
+import { DetailedViewComponent } from './generictable/detailed-view/detailed-view.component';
+import { ItemBadgeComponent } from './generictable/item-badge/item-badge.component';
+import { FilterPanelComponent } from './filter/filter-panel/filter-panel.component';
+import {ReferencesService} from './references/references.service';
+
+export function initializeApp(appConfig: AppConfigService): () => Promise<void> {
+  return () => appConfig.load();
+}
 
 @NgModule({
   declarations: [
@@ -54,6 +65,10 @@ import { SplashComponent } from './splash/splash.component';
     TableComponent,
     RepositoryDialogComponent,
     SplashComponent,
+    CellComponent,
+    DetailedViewComponent,
+    ItemBadgeComponent,
+    FilterPanelComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -79,7 +94,15 @@ import { SplashComponent } from './splash/splash.component';
     HttpClientModule,
     MatDialogModule,
   ],
-  providers: [],
+  providers: [
+      AppConfigService,
+      {
+        provide: APP_INITIALIZER,
+        useFactory: initializeApp,
+        deps: [AppConfigService],
+        multi: true
+      }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -41,8 +41,8 @@ export class OrchestratorsTableComponent implements OnInit {
 class OTableModel extends BaseTableModel<Orchestrator> {
   columns = [
     {name: 'name', label: 'Orchestrator'},
-    {name: 'licenses'},
-    {name: 'programmingLanguages'},
+    {name: 'licenses', filterValue: 'orchestratorLicenses'},
+    {name: 'programmingLanguages', filterValue: 'orchestratorProgrammingLanguages'},
     {name: 'activeDevelopment'},
     {name: 'productionReady'}
   ];

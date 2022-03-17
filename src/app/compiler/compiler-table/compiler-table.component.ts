@@ -41,8 +41,8 @@ export class CompilerTableComponent implements OnInit {
 class CompilerTableModel extends BaseTableModel<Compiler> {
   columns = [
     {name: 'name', label: 'Compiler'},
-    {name: 'inputLanguages'},
-    {name: 'outputLanguages'},
-    {name: 'optimizationStrategies'}
+    {name: 'inputLanguages', filterValue: 'compilerInputLanguages'},
+    {name: 'outputLanguages', filterValue: 'compilerOutputLanguages'},
+    {name: 'optimizationStrategies', filterValue: 'compilerOptimizationStrategies'}
   ];
 }

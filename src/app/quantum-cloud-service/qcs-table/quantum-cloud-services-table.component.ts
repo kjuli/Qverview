@@ -44,9 +44,9 @@ export class QuantumCloudServicesTableComponent implements OnInit{
 class QcsTableModel extends BaseTableModel<QuantumCloudService> {
   columns = [
     {name: 'name', label: 'Quantum Cloud Service'},
-    {name: 'accessMethods'},
-    {name: 'serviceModel'},
-    {name: 'resources'},
-    {name: 'assemblyLanguages'}
+    {name: 'accessMethods', filterValue: 'accessMethods'},
+    {name: 'serviceModel', filterValue: 'serviceModels'},
+    {name: 'resources', filterValue: 'quantumExecutionResources'},
+    {name: 'assemblyLanguages', filterValue: 'assemblyLanguages'}
   ];
 }

@@ -1,19 +1,19 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
-import {ApiModel} from '../api/api.model';
-import {ApiService} from '../api/api.service';
+import {RepositoryModel} from '../repository/repositoryModel';
+import {RepositoryService} from '../repository/repository.service';
 import {SplashscreenStateService} from '../splash/splashscreen-state.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DataResolver implements Resolve<ApiModel> {
+export class DataResolver implements Resolve<RepositoryModel> {
 
-  constructor(private apiService: ApiService, private splashScreenService: SplashscreenStateService) {
+  constructor(private apiService: RepositoryService, private splashScreenService: SplashscreenStateService) {
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<ApiModel> {
-    const promise = new Promise<ApiModel>((resolve, reject) => {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<RepositoryModel> {
+    const promise = new Promise<RepositoryModel>((resolve, reject) => {
       this.apiService.getAllData().then(value => {
         this.splashScreenService.stop();
         resolve(value);

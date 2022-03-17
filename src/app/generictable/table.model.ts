@@ -17,15 +17,6 @@ export interface TableModel<M> {
   /** The columns of the table. */
   columns: ColumnDefinition[];
 
-  /**
-   * Converts the specific cell given by the row and column into a
-   * displayable string. This returned string will be displayed in
-   * the actual table.
-   * @param row The row of the cell.
-   * @param column The column of the cell.
-   * @return A displayable string for the table.
-   */
-  onCell(row: M, column: ColumnDefinition): string;
 }
 
 /**
@@ -36,6 +27,8 @@ export interface TableModel<M> {
 export interface ColumnDefinition {
   name: string;
   label?: string;
+  colorCode?: string | object;
+  filterValue?: string;
 }
 
 /**
@@ -70,7 +63,7 @@ export abstract class BaseTableModel<M extends Entity> implements TableModel<M> 
    * @param column The column of the cell.
    * @return a displayable string for the table cell.
    */
-  onCell(row: M, column: ColumnDefinition): string {
+  public onCell(row: M, column: ColumnDefinition): string {
     if (Array.isArray(row[column.name])) {
       if (row[column.name].length > 0) {
         return row[column.name].map(value => BaseTableModel.resolveReference(value)).join('<br/>\n');
@@ -94,6 +87,7 @@ export abstract class BaseTableModel<M extends Entity> implements TableModel<M> 
     return obj;
   }
 }
+
 
 function negate(s: Subject<boolean>): (value: boolean) => void {
   return value => s.next(!value);

@@ -1,4 +1,4 @@
-import { Entity } from '../common/repository';
+import {BaseDto, Entity} from '../common/repository';
 import { getEnumFromString } from '../filter/filter.service';
 import {
   AssemblyProgrammingLanguage,
@@ -12,14 +12,14 @@ import { ProgrammingLanguageService } from '../programming-language/programming-
 import { QcsService } from '../quantum-cloud-service/qcs.service';
 import { QuantumCloudService } from '../quantum-cloud-service/quantum-cloud-service.model';
 import { SdkService } from './sdk.service';
+import {Compiler} from '../compiler/compiler.model';
+import {CompilerService} from '../compiler/compiler.service';
+import randomColor from 'randomcolor';
 
-export interface SdkDto {
-    name: string;
+export interface SdkDto extends BaseDto {
     licenses: string[];
     programmingLanguages: string[];
-    compilerInputLanguages: string[];
-    compilerOutputLanguages: string[];
-    compilerOptimizationStrategies: string[];
+    compiler: string[];
     activeDevelopment: boolean;
     supportedQuantumCloudServices: string[];
     localSimulator: boolean;
@@ -42,10 +42,7 @@ const licenses = new Set<License>();
  * @param str the license name.
  */
 export function addLicense(str: string): License {
-    if (!licenses.has(str)) {
-        licenses.add(str);
-    }
-
+    licenses.add(str);
     return str;
 }
 
@@ -55,6 +52,15 @@ export function addLicense(str: string): License {
  */
 export function getAllLicenses(): License[] {
     return Array.from(licenses);
+}
+
+export function getLicenseColorCode(): object {
+    const settings = {luminosity: 'light'};
+    const colors = {};
+    for (const license of licenses) {
+        colors[license] = randomColor(settings);
+    }
+    return colors;
 }
 
 export const enum CompilerOptimizationStrategy {
@@ -70,17 +76,16 @@ const COMPILER_OPTIMIZATION_STRATEGIES = [
 export class SoftwareDevelopmentKit extends Entity {
     licenses: License[];
     programmingLanguages: HighLevelProgrammingLanguage[];
-    compilerInputLanguages: (AssemblyProgrammingLanguage | LanguageCombination | SdkInstance)[];
-    compilerOutputLanguages: (AssemblyProgrammingLanguage | LanguageCombination | SdkInstance)[];
-    compilerOptimizationStrategies: CompilerOptimizationStrategy[];
+    compiler: Compiler[];
     supportedQuantumCloudServices: QuantumCloudService[];
     activeDevelopment: boolean;
     localSimulator: boolean;
 
-    static fromDto(dto: SdkDto, languageService: ProgrammingLanguageService, cloudService: QcsService): SoftwareDevelopmentKit {
+    static fromDto(dto: SdkDto, languageService: ProgrammingLanguageService, cloudService: QcsService, compilerService: CompilerService): SoftwareDevelopmentKit {
         const result = new SoftwareDevelopmentKit();
 
         result.name = dto.name;
+        result.link = dto.link;
         result.activeDevelopment = dto.activeDevelopment;
         result.localSimulator = dto.localSimulator;
         result.licenses = dto.licenses.map(value => addLicense(value));
@@ -94,29 +99,11 @@ export class SoftwareDevelopmentKit extends Entity {
             }
         });
 
-        result.compilerInputLanguages = dto.compilerInputLanguages.map(language => {
-            try {
-                const programmingLanguage = languageService.findByName(language);
-                return getAsAssemblyLanguage(programmingLanguage);
-            } catch (err) {
-                console.log('Error occurred: ' + err);
-            }
-        });
-
-        result.compilerOutputLanguages = dto.compilerOutputLanguages.map(language => {
-            try {
-                const programmingLanguage = languageService.findByName(language);
-                return getAsAssemblyLanguage(programmingLanguage);
-            } catch (err) {
-                console.log('Error occurred: ' + err);
-            }
-        });
-
-        result.compilerOptimizationStrategies = dto.compilerOptimizationStrategies.map(
-          value => getEnumFromString(COMPILER_OPTIMIZATION_STRATEGIES, value));
-
+        result.compiler = dto.compiler.map(c => compilerService.findByName(c));
         result.supportedQuantumCloudServices = dto.supportedQuantumCloudServices.map(value => cloudService.findByName(value));
 
+        result.references = dto._references;
+        result.description = dto.description;
 
         return result;
     }
