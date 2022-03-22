@@ -1,19 +1,26 @@
 <mat-sidenav-container id="main">
-  <mat-sidenav disableClose="true" mode="side" opened style="position: fixed;">
+  <mat-sidenav disableClose="true" mode="side" [(opened)]="sidebarOpened" style="position: fixed;">
    <app-filter></app-filter>
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <div id="search-bar" style="margin: 10px">
-      <form>
-        <mat-form-field style="width: 100%;">
-          <span matPrefix></span>
-          <input type="text" matInput placeholder="Search" name="search">
-          <button matSuffix mat-button><mat-icon>search</mat-icon></button>
-        </mat-form-field>
-      </form>
+    <div style="position: fixed; top: 60px; z-index: 999">
+      <div>
+        <button mat-flat-button color="primary" (click)="sidebarOpened = !sidebarOpened" style="border-radius: 0; display: inline-block">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
     </div>
-    <div id="tables-wrapper">
+    <div id="tables-wrapper" style="margin-top: 30px;">
+      <div id="search-bar" style="margin: 10px;">
+        <form>
+          <mat-form-field style="width: 100%;">
+            <span matPrefix></span>
+            <input type="text" matInput placeholder="Search" name="search">
+            <button matSuffix mat-button><mat-icon>search</mat-icon></button>
+          </mat-form-field>
+        </form>
+      </div>
       <app-sdks-table id="sdks"></app-sdks-table>
       <app-quantum-cloud-services-table id="qcs"></app-quantum-cloud-services-table>
       <app-quantum-computation-resources-table id="qer"></app-quantum-computation-resources-table>

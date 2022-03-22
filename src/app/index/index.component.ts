@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class IndexComponent implements OnInit {
 
+  public sidebarOpened = false;
+
   constructor() { }
 
   ngOnInit(): void {

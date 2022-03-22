@@ -71,11 +71,11 @@ export class DetailedViewComponent implements OnInit, AfterViewInit {
   private getReferenceValue(reference: string, counter: number): ReferenceObject {
     if (reference.startsWith('bib:')) {
       const bibId = reference.replace('bib:', '');
-      const referenceObject: object = this.referenceService.references[bibId];
+      const referenceRepresentation = this.referenceService.getHtmlRepresentationOf(bibId);
       return {
         type: 'bibliography',
         counter,
-        bibliography: referenceObject
+        bibliography: referenceRepresentation
       };
     } else if (reference.startsWith('link:')) {
       const link = reference.replace('link:', '');
@@ -99,6 +99,8 @@ export class DetailedViewComponent implements OnInit, AfterViewInit {
   stringify(something: ReferenceObject): string {
     if (something.type === 'link') {
       return `<a href="${something.link}">${something.link}</a>`;
+    } else if (something.type === 'bibliography') {
+      return something.bibliography;
     } else {
       return `Unsupported...`;
     }
@@ -120,7 +122,7 @@ export interface DialogData {
 
 export interface ReferenceObject {
   type: 'link' | 'bibliography';
-  bibliography?: object;
+  bibliography?: string;
   link?: string;
   counter: number;
 }
