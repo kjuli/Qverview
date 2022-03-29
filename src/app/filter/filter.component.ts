@@ -311,140 +311,10 @@ export class FilterComponent implements OnInit {
     return result;
   }
 
-  // clearAll(): void {
-  //   this.selection.clearAll();
-  //   this.updateView();
-  // }
-  //
-  // clearSdks(): void {
-  //   this.selection.sdks = [];
-  //   this.updateView();
-  // }
-  //
-  // clearLicenses(): void {
-  //   this.selection.licenses = [];
-  //   this.updateView();
-  // }
-  //
-  // clearProgrammingLanguages(): void {
-  //   this.selection.programmingLanguages = [];
-  //   this.updateView();
-  // }
-  //
-  // clearInputLanguages(): void {
-  //   this.selection.inputLanguages = [];
-  //   this.updateView();
-  // }
-  //
-  // clearOutputLanguages(): void {
-  //   this.selection.outputLanguages = [];
-  //   this.updateView();
-  // }
-  //
-  // clearOptimizationStrategies(): void {
-  //   this.selection.optimizationStrategies = [];
-  //   this.updateView();
-  // }
-  //
-  // clearQcs(): void {
-  //   this.selection.quantumCloudServices = [];
-  //   this.updateView();
-  // }
-  //
-  // clearAccessMethods(): void {
-  //   this.selection.accessMethods = [];
-  //   this.updateView();
-  // }
-  //
-  // clearServiceModels(): void {
-  //   this.selection.serviceModels = [];
-  //   this.updateView();
-  // }
-  //
-  // clearAssemlbyLanguages(): void {
-  //   this.selection.assemblyLanguages = [];
-  //   this.updateView();
-  // }
-  //
-  // clearQer(): void {
-  //   this.selection.quantumExecutionResources = [];
-  //   this.updateView();
-  // }
-  //
-  // clearExecutionType(): void {
-  //   this.selection.executionTypes = [];
-  //   this.updateView();
-  // }
-  //
-  // clearComputationModel(): void {
-  //   this.selection.computationModels = [];
-  //   this.updateView();
-  // }
-  //
-  // clearVendor(): void {
-  //   this.selection.vendors = [];
-  //   this.updateView();
-  // }
-  //
   searchAll(event: KeyboardEvent): void {
      const filterValue = (event.target as HTMLInputElement).value;
      this.filterService.search(filterValue.trim().toLowerCase());
   }
-  //
-  // clearQplTypes(): void {
-  //   this.selectedQplTypes = [];
-  //   this.updateView();
-  // }
-  //
-  // clearQplSyntaxImplementations(): void {
-  //   this.selectedQplSyntaxImplementations = [];
-  //   this.updateView();
-  // }
-  //
-  // clearCompilers(): void {
-  //   this.compilers = [];
-  //   this.updateView();
-  // }
-  //
-  // clearCompilerInputLanguages(): void {
-  //   this.compilerInputLanguages = [];
-  //   this.updateView();
-  // }
-  //
-  // clearCompilerOutputLanguages(): void {
-  //   this.compilerOutputLanguages = [];
-  //   this.updateView();
-  // }
-  //
-  // clearCompilerOptimizationStrategies(): void {
-  //   this.compilerOptimizationStrategies = [];
-  //   this.updateView();
-  // }
-  //
-  // clearOrchestrators(): void {
-  //   this.orchestrators = [];
-  //   this.updateView();
-  // }
-  //
-  // clearOrchestratorLicenses(): void {
-  //   this.orchestratorLicenses = [];
-  //   this.updateView();
-  // }
-  //
-  // clearOrchestratorLanguages(): void {
-  //   this.orchestratorProgrammingLanguages = [];
-  //   this.updateView();
-  // }
-  //
-  // clearActiveDevelopment(): void {
-  //   this.activeDevelopment = [];
-  //   this.updateView();
-  // }
-  //
-  // clearProductionReady(): void {
-  //   this.productionReady = [];
-  //   this.updateView();
-  // }
 
   updateShowTable(): void {
     this.filterService.setShowSdkTable(this.showSdkTable);
@@ -455,13 +325,4 @@ export class FilterComponent implements OnInit {
     this.filterService.setShowCompilerTable(this.showCompilerTable);
   }
 
-  /**
-   * Collects all the SDK data.
-   */
-  // private collectSdkData(): void {
-  //   for (const sdk of this.sdkService.softwareDevelopmentKits) {
-  //     this.sdks.push(sdk);
-  //     this.addAll(sdk.licenses, this.licenses);
-  //   }
-  // }
 }

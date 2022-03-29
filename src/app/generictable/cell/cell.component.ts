@@ -38,14 +38,7 @@ export class CellComponent implements OnInit {
     return value instanceof Entity;
   }
 
-  private referenceAssertion(value: any): asserts value is Entity {
-    if (!(value instanceof Entity)) {
-      throw TypeError('Value is not an entity');
-    }
-  }
-
   public filterToReference(value: Entity): void {
-    // ToDo: Filter now
     if (this.filterValue) {
       this.filterService.updateSelectionField(this.filterValue, value);
     }

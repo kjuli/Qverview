@@ -1,3 +1,39 @@
 #main {
   position: static;
 }
+
+#sidenav {
+  margin-top: 70px;
+}
+
+.search-box-wrapper {
+  box-sizing: border-box;
+  background: #3F51B5;
+}
+
+.search-box-wrapper > div {
+  box-sizing: border-box;
+  display: inline-block;
+  height: 40px;
+}
+
+.search-box-wrapper .mat-form-field.mat-form-field-label,
+.search-box-wrapper .mat-form-field-appearance-outline .mat-form-field-outline-thick,
+.search-box-wrapper mat-form-field.mat-form-field {
+  color: white !important;
+}
+
+.search-box-wrapper .mat-form-field-underline {
+  background-color: white;
+}
+
+.fixed-wrapper {
+  position: fixed;
+  top: 60px;
+  right: 0;
+  overflow: hidden;
+  z-index: 999;
+  transition-duration: 400ms;
+  transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition-property: left;
+}

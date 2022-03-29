@@ -22,23 +22,6 @@ export class SdksTableComponent implements OnInit {
     this.sdkTableModel = new SdkTableModel(this.sdkService);
     this.sdkTableModel.connectToFilterService(this.filterService.sdkFilterEvent$, this.filterService.searchEvent$,
       this.filterService.showSdkTable);
-
-    // this.sdkService.asObservable().subscribe(data => {
-    //   this.dataSource = new MatTableDataSource(data);
-    //   this.sdkTableModel.dataSource.next(this.dataSource);
-    // });
-
-    // this.filterService.sdkFilterEvent$.subscribe(filter => {
-    //   this.sdkTableModel.dataSource.next(new MatTableDataSource(filter));
-    // });
-    //
-    // this.filterService.searchEvent$.subscribe(value => {
-    //   this.sdkTableModel.currentDatasource.filter = value;
-    // });
-    //
-    // this.filterService.showSdkTable.subscribe(value => {
-    //   this.sdkTableModel.hideTable.next(!value);
-    // });
   }
 
   licensesClicked(license: string): void {
@@ -76,13 +59,7 @@ class SdkTableModel extends BaseTableModel<SoftwareDevelopmentKit> {
     {name: 'name', label: 'Software Development Kit', filterValue: 'sdks'},
     {name: 'licenses', filterValue: 'licenses'},
     {name: 'programmingLanguages', filterValue: 'languages'},
-    // {name: 'compilerInputLanguages'},
-    // {name: 'compilerOutputLanguages'},
-    // {name: 'compilerOptimizationStrategies'},
-    // Should be the following instead:
     {name: 'compiler'},
     {name: 'supportedQuantumCloudServices', filterValue: 'quantumCloudServices'},
-    //{name: 'activeDevelopment'},
-    //{name: 'localSimulator'}
   ];
 }

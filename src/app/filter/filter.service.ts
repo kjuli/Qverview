@@ -59,11 +59,6 @@ export class FilterService {
   }
 
   public updateSelectionField(field: string, value: any, sourceOfChange?: string): void {
-    // if (!(field in Object.keys(this.selection))) {
-    //   console.warn(`this is not a valid field: ${field}`);
-    //   return;
-    // }
-
     this.selection[field] = value;
     this.selectionSubject.next({selection: this.selection, sourceOfChange});
   }

@@ -1,14 +1,7 @@
-<!--<ng-container *ngIf="isReference(value); else valueTemp">-->
-<!--    <a [ngClass]="getReferenceClass(value) + ' cell'" (click)="filterToReference()">{{value.toString()}}</a>-->
-<!--</ng-container>-->
-<!--<ng-template #valueTemp>-->
-<!--    <a class="cell" *ngIf="value !== undefined">{{value}}</a>-->
-<!--</ng-template>-->
 <ng-container *ngIf="isArray(value); else single">
     <ng-container *ngIf="value.length > 0; else emptyArray">
         <ng-container *ngFor="let singleCell of value">
-<!--            <a [ngClass]="getStyleClass(singleCell)" (click)="filterToReference(singleCell)" [ngStyle]="customColor()">{{singleCell.toString()}}</a>-->
-            <app-item-badge (click)="filterToReference(singleCell)" [color]="color" [value]="singleCell.toString()" [isUndefined]="singleCell.isUndefined"></app-item-badge>
+           <app-item-badge (click)="filterToReference(singleCell)" [color]="color" [value]="singleCell.toString()" [isUndefined]="singleCell.isUndefined"></app-item-badge>
         </ng-container>
     </ng-container>
     <ng-template #emptyArray>
@@ -25,7 +18,6 @@
         </ng-container>
     </ng-template>
     <ng-template #reference>
-<!--        <a [ngClass]="getStyleClass(value)" (click)="filterToReference(value)" [ngStyle]="customColor()">{{value.toString()}}</a>-->
         <app-item-badge (click)="filterToReference(value)" [color]="color" [value]="value.toString()" [isUndefined]="value.isUndefined"></app-item-badge>
     </ng-template>
 </ng-template>

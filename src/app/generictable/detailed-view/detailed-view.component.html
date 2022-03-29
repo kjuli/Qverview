@@ -12,14 +12,6 @@
     <ng-container *ngFor="let item of entityData | keyvalue">
         <div *ngIf="item.value" style="margin: 10px 0">
             <strong>{{getLabel(item.key)}}</strong>:
-<!--            <ng-template *ngIf="isArray(item.value); else primitive">-->
-<!--                <ng-template *ngFor="let singleItem of item.value">-->
-<!--                    <app-item-badge [color]="getColor(item.key)" [isUndefined]="isUndefined(singleItem)" [value]="singleItem"></app-item-badge>-->
-<!--                </ng-template>-->
-<!--            </ng-template>-->
-<!--            <ng-template #primitive>-->
-<!--                <app-item-badge [color]="getColor(item.key)" [isUndefined]="isUndefined(item.value)" [value]="item.value"></app-item-badge>-->
-<!--            </ng-template>-->
             <app-cell [value]="item.value" [color]="getColor(item.key)"></app-cell>
             <span *ngFor="let ref of references[item.key]">
                 [{{ref.counter}}]
@@ -28,12 +20,9 @@
     </ng-container>
     <h2>References:</h2>
     <ul style="list-style: none; padding: 0;">
-<!--        <li *ngFor="let reference of references | keyvalue">-->
-<!--            [{{reference.value[0].counter}}] {{stringify(reference.value)}}-->
-<!--        </li>-->
         <ng-container *ngFor="let reference of references | keyvalue">
             <li *ngFor="let r of reference.value">
-                <span>[{{r.counter}}]</span>
+                <span>[{{r.counter}}]</span> &nbsp;
                 <span [innerHTML]="stringify(r)"></span>
             </li>
         </ng-container>
