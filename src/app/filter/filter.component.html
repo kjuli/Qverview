@@ -56,8 +56,13 @@
         <span>clear all</span>
       </button>
     </div>
+    <div>
+      <mat-button-toggle-group name="logicalConnection" aria-label="Logical Connection" [(ngModel)]="globalConnection">
+        <mat-button-toggle value="and">AND</mat-button-toggle>
+        <mat-button-toggle value="or" checked>OR</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
   </div>
-
 
 
   <mat-accordion>

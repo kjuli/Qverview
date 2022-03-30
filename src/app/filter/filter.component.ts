@@ -18,10 +18,8 @@ import { Compiler } from '../compiler/compiler.model';
 import { OrchestratorService } from '../orchestrator/orchestrator.service';
 import { Orchestrator } from '../orchestrator/orchestrator.model';
 import { OrchestratorFilterModel } from './orchestratorFilter.model';
-import {Subject} from 'rxjs';
-import {FilterModel, Selection, SelectionChange} from './filter.model';
+import {SelectionChange} from './filter.model';
 import {FilterField} from './filter-panel/filter-panel.component';
-import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-filter',
@@ -49,6 +47,8 @@ export class FilterComponent implements OnInit {
   showPLTable = true;
   showCompilerTable = true;
   showOTable = true;
+
+  globalConnection: 'and' | 'or';
 
   sdkFields: FilterField[] = [
     {label: 'SDKs', field: 'sdks', clear: this.filterService.clearSdks},
@@ -85,77 +85,8 @@ export class FilterComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    // this.collectSdkData();
-    // this.collectQcsData();
-    // this.collectQerData();
-    // this.collectPlData();
-    // this.collectCompilerData();
-    // this.collectOrchastratorData();
-    // this.sortAllData();
-
-    // this.filterService.selection.subscribe(this.updateSelection);
     this.filterService.registerListener(this.updateView);
   }
-
-  // private sortAllData() {
-  //   this.centralData.sortAllData();
-  // }
-  //
-  // private collectOrchastratorData(): void {
-  //   for (const orchestrator of this.orchestratorService.orchestrators) {
-  //     this.centralData.orchestrators.push(orchestrator);
-  //     this.addAll(orchestrator.licenses, this.centralData.orchestratorLicenses);
-  //     this.addAll(orchestrator.programmingLanguages, this.centralData.orchestratorProgrammingLanguages);
-  //   }
-  // }
-  //
-  // private collectCompilerData(): void {
-  //   for (const compiler of this.compilerService.compilers) {
-  //     this.centralData.compilers.push(compiler);
-  //     this.addAll(compiler.inputLanguages, this.centralData.compilerInputLanguages);
-  //     this.addAll(compiler.outputLanguages, this.centralData.compilerOutputLanguages);
-  //     this.addAll(compiler.optimizationStrategies, this.centralData.compilerOptimizationStrategies);
-  //   }
-  // }
-  //
-  // private collectPlData(): void {
-  //   for (const qpl of this.qplService.programmingLanguages) {
-  //     this.centralData.programmingLanguages.push(qpl);
-  //     if (!this.centralData.qplTypes.includes(qpl.type)) {
-  //       this.centralData.qplTypes.push(qpl.type);
-  //     }
-  //     if (!this.centralData.qplSyntaxImplementations.includes(qpl.syntaxImplementation)) {
-  //       this.centralData.qplSyntaxImplementations.push(qpl.syntaxImplementation);
-  //     }
-  //     if (!this.centralData.qplStandardizations.includes(qpl.standardization)) {
-  //       this.centralData.qplStandardizations.push(qpl.standardization);
-  //     }
-  //   }
-  // }
-  //
-  // private collectQerData(): void {
-  //   for (const qer of this.qerService.quantumExecutionResources) {
-  //     this.centralData.quantumExecutionResources.push(qer.name);
-  //     this.centralData.executionTypes = ['QPU', 'Simulator'];
-  //     if (!this.centralData.computationModels.includes(qer.computationModel)) {
-  //       this.centralData.computationModels.push(qer.computationModel);
-  //     }
-  //     if (!this.centralData.vendors.includes(qer.vendor)) {
-  //       this.centralData.vendors.push(qer.vendor);
-  //     }
-  //   }
-  // }
-  //
-  // private collectQcsData(): void {
-  //   for (const qcs of this.qcsService.quantumCloudServices) {
-  //     this.centralData.quantumCloudServices.push(qcs.name);
-  //     this.addAll(qcs.accessMethods, this.centralData.accessMethods);
-  //     if (!this.centralData.serviceModels.includes(qcs.serviceModel)) {
-  //       this.centralData.serviceModels.push(qcs.serviceModel);
-  //     }
-  //     this.addAll(qcs.assemblyLanguages, this.centralData.assemblyLanguages);
-  //   }
-  // }
 
   addAll(source: any[], target: any[]): void {
     source.forEach(x => {
@@ -168,10 +99,6 @@ export class FilterComponent implements OnInit {
   clearAll(): void {
       this.filterService.clearAll();
   }
-
-  // updateView(): void {
-  //   this.updateSelection(this.filterService.selection);
-  // }
 
   updateView = (selectionChange: SelectionChange) => {
       const selection = selectionChange.selection;

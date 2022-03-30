@@ -13,6 +13,8 @@ export class FilterPanelComponent implements OnInit, AfterViewInit {
   @Input() title: string;
   @Input() fields: FilterField[];
 
+  localConnection: 'and' | 'or';
+
   @ViewChildren(MatSelect) selects: QueryList<MatSelect>;
 
   constructor(public filterService: FilterService) { }

@@ -5,6 +5,13 @@
         </mat-panel-title>
     </mat-expansion-panel-header>
 
+    <div id="and-or-inclusion" style="text-align: center" [(ngModel)]="localConnection">
+      <mat-button-toggle-group>
+        <mat-button-toggle value="and" checked>AND</mat-button-toggle>
+        <mat-button-toggle value="or">OR</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
     <form>
         <ng-container *ngFor="let f of fields">
             <mat-form-field>
