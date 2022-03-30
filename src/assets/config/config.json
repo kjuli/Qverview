@@ -14,7 +14,7 @@
     "syntaxImplementation": "rgb(200,190,180)",
     "optimizationStrategies": "rgb(180,190,200)"
   },
-  "defaultRepository": "http://localhost:8887",
+  "defaultRepository": "https://raw.githubusercontent.com/kjuli/QverviewData/master",
   "references": [
     "assets/references/bibliography.bib"
   ]
