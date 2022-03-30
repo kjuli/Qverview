@@ -43,6 +43,8 @@ import { DetailedViewComponent } from './generictable/detailed-view/detailed-vie
 import { ItemBadgeComponent } from './generictable/item-badge/item-badge.component';
 import { FilterPanelComponent } from './filter/filter-panel/filter-panel.component';
 import {ReferencesService} from './references/references.service';
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import { ErrorDialogComponent } from './repository/error-dialog/error-dialog.component';
 
 export function initializeApp(appConfig: AppConfigService): () => Promise<void> {
   return () => appConfig.load();
@@ -69,31 +71,33 @@ export function initializeApp(appConfig: AppConfigService): () => Promise<void> 
     DetailedViewComponent,
     ItemBadgeComponent,
     FilterPanelComponent,
+    ErrorDialogComponent,
   ],
-  imports: [
-    AppRoutingModule,
-    BrowserModule,
-    FormsModule,
-    MatTableModule,
-    MatSortModule,
-    BrowserAnimationsModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    MatCheckboxModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatToolbarModule,
-    MatDividerModule,
-    MatPaginatorModule,
-    MatTabsModule,
-    MatExpansionModule,
-    MatCardModule,
-    MatInputModule,
-    HttpClientModule,
-    MatDialogModule,
-  ],
+    imports: [
+        AppRoutingModule,
+        BrowserModule,
+        FormsModule,
+        MatTableModule,
+        MatSortModule,
+        BrowserAnimationsModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        MatCheckboxModule,
+        MatSidenavModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatDividerModule,
+        MatPaginatorModule,
+        MatTabsModule,
+        MatExpansionModule,
+        MatCardModule,
+        MatInputModule,
+        HttpClientModule,
+        MatDialogModule,
+        MatButtonToggleModule,
+    ],
   providers: [
       AppConfigService,
       {

@@ -44,13 +44,14 @@ export abstract class BaseTableModel<M extends Entity> implements TableModel<M> 
   currentSearch: string;
 
   private readonly subscriber = {
-    next: next => {
+    next: (next: M[]) => {
       this.currentDatasource = new MatTableDataSource<M>(next);
       this.dataSource.next(this.currentDatasource);
       if (this.currentSearch && this.currentSearch !== '') {
         // Include Search String
         this.currentDatasource.filter = this.currentSearch;
       }
+      next.forEach(entity => entity.tableModel = this);
     },
     error: error => console.error('An error occurred during subscribing repository in table: ' + error),
     complete: () => console.debug('Table build completed')

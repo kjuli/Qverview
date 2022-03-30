@@ -12,7 +12,9 @@
     <ng-container *ngFor="let item of entityData | keyvalue">
         <div *ngIf="item.value" style="margin: 10px 0">
             <strong>{{getLabel(item.key)}}</strong>:
-            <app-cell [value]="item.value" [color]="getColor(item.key)"></app-cell>
+            <app-cell [value]="item.value"
+                      [color]="getColor(item.key)"
+                      filterOrDialog="dialog"></app-cell>
             <span *ngFor="let ref of references[item.key]">
                 [{{ref.counter}}]
             </span>

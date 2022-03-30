@@ -32,11 +32,6 @@ export class DetailedViewComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    // for (const [key, value] of Object.entries(this.entity)) {
-    //   if (typeof value !== 'function' && typeof value !== 'boolean' && key !== 'link' && key !== 'isUndefined' && key !== 'name' && key !== 'references') {
-    //     this.entityData[key] = value;
-    //   }
-    // }
     for (const columnDef of this.tableDefinition.columns) {
       if (columnDef.name === 'name') {
         continue;

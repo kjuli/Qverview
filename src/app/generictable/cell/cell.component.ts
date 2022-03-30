@@ -18,6 +18,7 @@ export class CellComponent implements OnInit {
   @Input() filterValue: string;
   @Input() parent: Entity;
   @Input() table?: TableModel<any>;
+  @Input() filterOrDialog: 'filter' | 'dialog' = 'filter';
 
   colored: boolean = !this.isID;
 
@@ -75,20 +76,27 @@ export class CellComponent implements OnInit {
     }
   }
 
-  public openEntityDialog(): void {
-    if (this.parent) {
+  public openEntityDialog(value: Entity = this.parent, table: TableModel<any> = this.table): void {
+    if (value) {
       const dialogRef = this.dialog.open(DetailedViewComponent, {
         data: {
-          entity: this.parent,
-          table: this.table
+          entity: value,
+          table
         },
         autoFocus: false,
         maxHeight: '90vh'
       });
 
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('This dialog was closed');
-      });
+      // dialogRef.afterClosed().subscribe(result => {
+      // });
+    }
+  }
+
+  public onClick(value: Entity): void {
+    if (this.filterOrDialog === 'filter') {
+      this.filterToReference(value);
+    } else {
+      this.openEntityDialog(value, value.tableModel);
     }
   }
 }

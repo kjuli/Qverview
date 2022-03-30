@@ -11,6 +11,7 @@
  */
 import {BehaviorSubject, Observable, ReplaySubject, Subject} from 'rxjs';
 import REPOSITORY_STATE from '../repository/repositoryModel';
+import {TableModel} from '../generictable/table.model';
 
 export interface Repository<T extends Entity, ID = string> {
     /**
@@ -38,6 +39,9 @@ export abstract class Entity {
     references?: object;
     description?: string;
     isUndefined = false;
+
+    /** Specifies to which table this entity belongs to. */
+    tableModel?: TableModel<any>;
 
     toString(): string {
         if (this.isUndefined) {
@@ -88,7 +92,6 @@ export abstract class NameRepository<T extends Entity> implements Repository<T> 
 
     private subscribeApiStr(convert: (data: any) => T): (value: any) => void {
       return value => {
-        console.log('Called API! ' + this.repositoryFilename);
         this.cache = value.map(convert);
         this.observable.next(this.cache);
       };
