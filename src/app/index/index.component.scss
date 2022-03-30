@@ -17,14 +17,14 @@
   height: 40px;
 }
 
-.search-box-wrapper .mat-form-field.mat-form-field-label,
-.search-box-wrapper .mat-form-field-appearance-outline .mat-form-field-outline-thick,
-.search-box-wrapper mat-form-field.mat-form-field {
+::ng-deep #search-bar .mat-form-field .mat-form-field-label,
+::ng-deep #search-bar .mat-form-field-appearance-outline .mat-form-field-outline-thick,
+::ng-deep #search-bar mat-form-field.mat-form-field {
   color: white !important;
 }
 
-.search-box-wrapper .mat-form-field-underline {
-  background-color: white;
+::ng-deep #search-bar .mat-form-field-underline {
+  background-color: white !important;
 }
 
 .fixed-wrapper {

@@ -41,11 +41,16 @@ export abstract class BaseTableModel<M extends Entity> implements TableModel<M> 
   dataSource = new ReplaySubject<MatTableDataSource<M>>();
   currentDatasource: MatTableDataSource<M>;
   abstract columns;
+  currentSearch: string;
 
   private readonly subscriber = {
     next: next => {
       this.currentDatasource = new MatTableDataSource<M>(next);
       this.dataSource.next(this.currentDatasource);
+      if (this.currentSearch && this.currentSearch !== '') {
+        // Include Search String
+        this.currentDatasource.filter = this.currentSearch;
+      }
     },
     error: error => console.error('An error occurred during subscribing repository in table: ' + error),
     complete: () => console.debug('Table build completed')
@@ -76,7 +81,10 @@ export abstract class BaseTableModel<M extends Entity> implements TableModel<M> 
 
   public connectToFilterService(filterEvent: Observable<M[]>, searchEvent: Observable<string>, showEvent: Observable<boolean>) {
     filterEvent.subscribe(this.subscriber);
-    searchEvent.subscribe(search => this.currentDatasource.filter = search);
+    searchEvent.subscribe(search => {
+      this.currentSearch = search;
+      this.currentDatasource.filter = search;
+    });
     showEvent.subscribe(negate(this.hideTable));
   }
 

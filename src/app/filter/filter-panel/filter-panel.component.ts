@@ -41,8 +41,6 @@ export class FilterPanelComponent implements OnInit, AfterViewInit {
       if (!Array.isArray(s)) {
         s = [s];
       }
-      console.log('Selection: ' + s);
-
       item.value = s;
     });
   };
