@@ -14,4 +14,9 @@ export class SplashscreenStateService {
   public stop(): void {
     this.subject.next(false);
   }
+
+  public start(): void {
+    this.subject.next(true);
+  }
+
 }

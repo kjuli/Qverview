@@ -17,16 +17,35 @@ export class SplashComponent implements OnInit {
 
   ngOnInit(): void {
     this.splashScreenStateService.subscribe(res => {
-      this.hideSplashAnimation();
+      if (!res) {
+        this.hideSplashAnimation();
+      } else {
+        this.showSplashAnimation();
+      }
     });
   }
 
-  private hideSplashAnimation() {
+  private hideSplashAnimation(): void {
+    if (!this.showSplash) {
+      // Splash-Screen already hidden
+      return;
+    }
+
     this.splashTransition = `opacity ${this.ANIMATION_DURATION}s`;
     this.opacityChange = 0;
 
     setTimeout(() => {
-      this.showSplash = !this.showSplash;
+      this.showSplash = false;
     }, 500);
+  }
+
+  private showSplashAnimation(): void {
+    if (this.showSplash) {
+      // Splash-Screen already shown
+      return;
+    }
+    this.opacityChange = 1;
+    this.splashTransition = 'opacity 0s';
+    this.showSplash = true;
   }
 }
