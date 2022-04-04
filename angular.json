@@ -61,6 +61,10 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "dev": {
+              "optimization": false,
+              "sourceMap": true
             }
           }
         },
@@ -72,6 +76,9 @@
           "configurations": {
             "production": {
               "browserTarget": "qverview:build:production"
+            },
+            "dev": {
+              "browserTarget": "qverview:build:dev"
             }
           }
         },
