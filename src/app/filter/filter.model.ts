@@ -87,4 +87,14 @@ export class Selection extends FilterModel {
 export interface SelectionChange {
     selection: Selection;
     sourceOfChange?: string;
+    connector: {[key: string]: 'and' | 'or'};
 }
+
+export type ConnectedFilter<FilterType> = {
+    filter: FilterType;
+    connector: 'and' | 'or';
+};
+
+export type ConnectedFilterModel<FilterModelType> = {
+    [Property in keyof FilterModelType]: ConnectedFilter<FilterModelType[Property]>;
+};

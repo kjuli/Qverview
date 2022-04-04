@@ -18,7 +18,7 @@ import { Compiler } from '../compiler/compiler.model';
 import { OrchestratorService } from '../orchestrator/orchestrator.service';
 import { Orchestrator } from '../orchestrator/orchestrator.model';
 import { OrchestratorFilterModel } from './orchestratorFilter.model';
-import {SelectionChange} from './filter.model';
+import {ConnectedFilterModel, SelectionChange} from './filter.model';
 import {FilterField} from './filter-panel/filter-panel.component';
 
 @Component({
@@ -33,11 +33,11 @@ export class FilterComponent implements OnInit {
               private compilerService: CompilerService, private orchestratorService: OrchestratorService) {
     this.filterService.syncSdkQcsEvent$.subscribe(value => {
       this.filterService.centralData.sdkCrossTableQcs = value;
-      this.updateView({selection: this.filterService.selection});
+      this.updateView({selection: this.filterService.selection, connector: {}});
     });
     this.filterService.syncQcsQerEvent$.subscribe(value => {
       this.filterService.centralData.qcsCrossTableQer = value;
-      this.updateView({selection: this.filterService.selection});
+      this.updateView({selection: this.filterService.selection, connector: {}});
     });
   }
 
@@ -63,20 +63,20 @@ export class FilterComponent implements OnInit {
   ];
   qerFields: FilterField[] = [
       {label: 'Quantum Execution Resource', field: 'quantumExecutionResources', clear: () => this.filterService.clearQer()},
-      {label: 'Execution Type', field: 'executionTypes', clear: this.filterService.clearExecutionType},
-      {label: 'Computation Models', field: 'computationModels', clear: this.filterService.clearComputationModel},
-      {label: 'Vendors', field: 'vendors', clear: this.filterService.clearVendor}
+      {label: 'Execution Type', field: 'executionTypes', clear: () => this.filterService.clearExecutionType()},
+      {label: 'Computation Models', field: 'computationModels', clear: () => this.filterService.clearComputationModel()},
+      {label: 'Vendors', field: 'vendors', clear: () => this.filterService.clearVendor()}
   ];
   qplFields: FilterField[] = [
-      {label: 'Type', field: 'qplTypes', clear: this.filterService.clearQplTypes},
-      {label: 'Syntax Implementation', field: 'qplSyntaxImplementations', clear: this.filterService.clearQplSyntaxImplementations},
+      {label: 'Type', field: 'qplTypes', clear: () => this.filterService.clearQplTypes()},
+      {label: 'Syntax Implementation', field: 'qplSyntaxImplementations', clear: () => this.filterService.clearQplSyntaxImplementations()},
       {label: 'Standardization', field: 'qplStandardization', clear: () => {}}
   ];
   compilerFields: FilterField[] = [
-      {label: 'Compiler', field: 'compilers', clear: this.filterService.clearCompilers},
-      {label: 'Input Languages', field: 'compilerInputLanguages', clear: this.filterService.clearCompilerInputLanguages},
-      {label: 'Output Languages', field: 'compilerOutputLanguages', clear: this.filterService.clearCompilerOutputLanguages},
-      {label: 'Optimization Strategies', field: 'compilerOptimizationStrategies', clear: this.filterService.clearCompilerOptimizationStrategies}
+      {label: 'Compiler', field: 'compilers', clear: () => this.filterService.clearCompilers()},
+      {label: 'Input Languages', field: 'compilerInputLanguages', clear: () => this.filterService.clearCompilerInputLanguages()},
+      {label: 'Output Languages', field: 'compilerOutputLanguages', clear: () => this.filterService.clearCompilerOutputLanguages()},
+      {label: 'Optimization Strategies', field: 'compilerOptimizationStrategies', clear: () => this.filterService.clearCompilerOptimizationStrategies()}
   ];
   orchestratorFields: FilterField[] = [
       {label: 'Orchestrator', field: 'orchestrators', clear: this.filterService.clearOrchestrators},
@@ -102,20 +102,20 @@ export class FilterComponent implements OnInit {
 
   updateView = (selectionChange: SelectionChange) => {
       const selection = selectionChange.selection;
-      const sdkFilter: SdkFilterModel = {
-        names: selection.sdks,
-        licenses: selection.licenses,
-        programmingLanguages: selection.programmingLanguages
+      const sdkFilter: ConnectedFilterModel<SdkFilterModel> = {
+        names: {filter: selection.sdks, connector: selectionChange.connector.sdk || 'or' },
+        licenses: {filter: selection.licenses, connector: selectionChange.connector.licenses || 'or'},
+        programmingLanguages: {filter: selection.programmingLanguages, connector: selectionChange.connector.programmingLanguages || 'or'}
       };
       let filteredSdks: SoftwareDevelopmentKit[] = this.sdkService.getFilteredSdks(sdkFilter);
       console.log('Filtered Sdks: <' + filteredSdks.length + '>');
 
-      const qcsFilter: QcsFilterModel = {
-        names: selection.quantumCloudServices,
-        accessMethods: selection.accessMethods,
-        serviceModels: selection.serviceModels,
-        resources: [],
-        assemblyLanguages: selection.assemblyLanguages,
+      const qcsFilter: ConnectedFilterModel<QcsFilterModel> = {
+        names: {filter: selection.quantumCloudServices, connector: selectionChange.connector.quantumCloudServices || 'or' },
+        accessMethods: {filter: selection.accessMethods, connector: selectionChange.connector.accessMethods || 'or' },
+        serviceModels: {filter: selection.serviceModels, connector: selectionChange.connector.serviceModels || 'or' },
+        resources: {filter: [], connector: 'or' },
+        assemblyLanguages: {filter: selection.assemblyLanguages, connector: selectionChange.connector.assemblyLanguages || 'or' }
       };
       if (selection.quantumCloudServices.length > 0) {
         console.log('Selected Quantum cloud service: ' + selection.quantumCloudServices);
@@ -123,11 +123,11 @@ export class FilterComponent implements OnInit {
       }
       let filteredQcs: QuantumCloudService[] = this.qcsService.getFilteredQcs(qcsFilter);
 
-      const qerFilter: QerFilterModel = {
-        names: selection.quantumExecutionResources,
-        executionType: selection.executionTypes,
-        computationModels: selection.computationModels,
-        vendors: selection.vendors
+      const qerFilter: ConnectedFilterModel<QerFilterModel> = {
+        names: {filter: selection.quantumExecutionResources, connector: selectionChange.connector.quantumExecutionResources || 'or' },
+        executionType: {filter: selection.executionTypes, connector: selectionChange.connector.executionType || 'or' },
+        computationModels: {filter: selection.computationModels, connector: selectionChange.connector.computationModels || 'or' },
+        vendors: {filter: selection.vendors, connector: selectionChange.connector.vendors || 'or' },
       };
       let filteredQers: QuantumExecutionResource[] = this.qerService.getFilteredQers(qerFilter);
 
@@ -147,28 +147,28 @@ export class FilterComponent implements OnInit {
         hasChanged = (oldSdks !== filteredSdks.length || oldQcs !== filteredQcs.length || oldQers !== filteredQers.length);
       }
 
-      const qplFilter: QplFilterModel = {
-        names: selection.programmingLanguages,
-        types: selection.qplTypes,
-        syntaxImplementations: selection.qplSyntaxImplementations,
-        standardizations: selection.qplStandardizations
+      const qplFilter: ConnectedFilterModel<QplFilterModel> = {
+        names: {filter: selection.programmingLanguages, connector: selectionChange.connector.programmingLanguages || 'or' },
+        types: {filter: selection.qplTypes, connector: selectionChange.connector.qplTypes || 'or' },
+        syntaxImplementations: { filter: selection.qplSyntaxImplementations, connector: selectionChange.connector.qplSyntaxImplementation || 'or' },
+        standardizations: { filter: selection.qplStandardizations, connector: selectionChange.connector.qplStandardization || 'or' }
       };
       const filteredQpls: ProgrammingLanguage[] = this.qplService.getFilteredQpls(qplFilter);
 
-      const compilerFilter: CompilerFilterModel = {
-        names: selection.compilers,
-        inputLanguages: selection.compilers,
-        outputLanguages: selection.compilers,
-        optimizationStrategies: selection.compilers
+      const compilerFilter: ConnectedFilterModel<CompilerFilterModel> = {
+        names: {filter: selection.compilers, connector: selectionChange.connector.compiler || 'or' },
+        inputLanguages: {filter: selection.compilerInputLanguages, connector: selectionChange.connector.compilerInputLanguages || 'or' },
+        outputLanguages: {filter: selection.compilerOutputLanguages, connector: selectionChange.connector.compilerOutputLanguages || 'or' },
+        optimizationStrategies: {filter: selection.compilerOptimizationStrategies, connector: selectionChange.connector.compilerOptimizationStrategies || 'or' }
       };
       const filteredCompilers: Compiler[] = this.compilerService.getFilteredCompilers(compilerFilter);
 
-      const orchestratorFilter: OrchestratorFilterModel = {
-        names: selection.orchestrators,
-        licenses: selection.orchestratorLicenses,
-        programmingLanguages: selection.programmingLanguages,
-        activeDevelopment: selection.activeDevelopment,
-        productionReady: selection.productionReady
+      const orchestratorFilter: ConnectedFilterModel<OrchestratorFilterModel> = {
+        names: {filter: selection.orchestrators, connector: selectionChange.connector.orchestrators || 'or' },
+        licenses: {filter: selection.orchestratorLicenses, connector: selectionChange.connector.orchestratorLicenses || 'or' },
+        programmingLanguages: {filter: selection.programmingLanguages, connector: selectionChange.connector.programmingLanguages || 'or' },
+        activeDevelopment: {filter: [], connector: 'or' },
+        productionReady: {filter: [], connector: 'or' } // TODO: This must be gone.
       };
       const filteredOrchestrators: Orchestrator[] = this.orchestratorService.getFilteredOrchestrators(orchestratorFilter);
 
@@ -257,5 +257,6 @@ export class FilterComponent implements OnInit {
           case 'and': this.globalConnection = 'or'; break;
           case 'or': this.globalConnection = 'and'; break;
       }
+      this.filterService.setGlobalConnection(this.globalConnection);
   }
 }

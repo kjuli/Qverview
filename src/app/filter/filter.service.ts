@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import { SoftwareDevelopmentKit } from '../sdk/sdk.model';
-import { QuantumCloudService } from '../quantum-cloud-service/quantum-cloud-service.model';
-import { QuantumExecutionResource } from '../quantum-execution-resource/quantum-execution-resource.model';
-import { ProgrammingLanguage } from '../programming-language/programming-language.model';
-import { Compiler } from '../compiler/compiler.model';
-import { Orchestrator } from '../orchestrator/orchestrator.model';
-import {FilterModel, Selection, SelectionChange} from './filter.model';
+import {SoftwareDevelopmentKit} from '../sdk/sdk.model';
+import {QuantumCloudService} from '../quantum-cloud-service/quantum-cloud-service.model';
+import {QuantumExecutionResource} from '../quantum-execution-resource/quantum-execution-resource.model';
+import {ProgrammingLanguage} from '../programming-language/programming-language.model';
+import {Compiler} from '../compiler/compiler.model';
+import {Orchestrator} from '../orchestrator/orchestrator.model';
+import {ConnectedFilter, FilterModel, Selection, SelectionChange} from './filter.model';
 import {QcsService} from '../quantum-cloud-service/qcs.service';
 import {OrchestratorService} from '../orchestrator/orchestrator.service';
 import {SdkService} from '../sdk/sdk.service';
@@ -40,8 +40,11 @@ export class FilterService {
   public readonly centralData = new FilterModel();
   public readonly selection = new Selection();
 
+  private readonly connectors: {[key: string]: 'and' | 'or'} = {};
+
   private readonly selectionSubject = new BehaviorSubject<SelectionChange>({
-    selection: this.selection
+    selection: this.selection,
+    connector: this.connectors
   });
 
   public constructor(private sdkService: SdkService, private qcsService: QcsService,
@@ -53,15 +56,18 @@ export class FilterService {
     this.collectQerData();
     this.collectSdkData();
     this.collectPlData();
+
+    this.selectionSubject.subscribe(value => console.log(`Connectors: ${JSON.stringify(value.connector)}`));
   }
 
   public registerListener(listener: (value: SelectionChange) => void): void {
     this.selectionSubject.subscribe(listener);
   }
 
-  public updateSelectionField(field: string, value: any, sourceOfChange?: string): void {
+  public updateSelectionField(field: string, value: any, sourceOfChange?: string, connector: 'and' | 'or' = 'or'): void {
     this.selection[field] = value;
-    this.selectionSubject.next({ selection: this.selection, sourceOfChange });
+    this.connectors[field] = connector;
+    this.selectionSubject.next({ selection: this.selection, sourceOfChange, connector: this.connectors });
   }
 
   public toggleSelectionField(field: string, value: Entity, sourceOfChange?: string): void {
@@ -71,7 +77,7 @@ export class FilterService {
     } else {
       this.selection[field].push(value);
     }
-    this.selectionSubject.next({ selection: this.selection, sourceOfChange });
+    this.selectionSubject.next({ selection: this.selection, sourceOfChange, connector: this.connectors });
   }
 
   setShowCompilerTable(showCompilerTable: boolean): void {
@@ -192,6 +198,12 @@ export class FilterService {
 
   get searchEvent$(): Observable<string> {
     return this.searchSubject.asObservable();
+  }
+
+  public setGlobalConnection(connection: 'and' | 'or'): void {
+    globalConnection = connection;
+    // Update
+    this.selectionSubject.next({selection: this.selection, connector: this.connectors, sourceOfChange: 'Global Change'});
   }
 
   private collectOrchastratorData(): void {
@@ -382,11 +394,15 @@ export class FilterService {
       }
     });
   }
+
 }
+
+
+let globalConnection: 'and' | 'or' = 'and';
 
 /**
  * Returns whether the array can be filtered by the given keys, that is,
- * the array contains the same values as the filter keys.
+ * the array contains at least one value in the filter keys.
  *
  * If filterKeys is empty, this will always return true.
  *
@@ -399,6 +415,27 @@ export function supportsOneOf(filterKeys: any[], array: any[]): boolean {
           (array !== null && array !== undefined && array.find(value => filterKeys.includes(value)) !== undefined));
 }
 
+/**
+ * Returns whether the array contains all the filter keys, i.e. comparable
+ * to an AND-gate.
+ *
+ * @param filterKeys The keys to filter the array.
+ * @param array The array itself that should be filtered.
+ * @returns true if the array is a subset of the filterKeys, or if filterKeys is empty.
+ */
+export function supportsAll(filterKeys: any[], array: any[]): boolean {
+  return ((filterKeys !== null && filterKeys !== undefined && filterKeys.length > 0) &&
+          (array !== null && array !== undefined && filterKeys.every(value => array.includes(value))));
+}
+
+export function supports(filterKeys: ConnectedFilter<any[]>, array: any[]): boolean {
+  if (filterKeys.connector === 'and') {
+    return supportsAll(filterKeys.filter, array);
+  } else {
+    return supportsOneOf(filterKeys.filter, array);
+  }
+}
+
 export function getEnumFromString<T extends string>(enumArray: T[], str: string): T {
   const result = enumArray.find(value => value.toLowerCase() === str.toLowerCase());
   if (result === undefined) {
@@ -406,4 +443,13 @@ export function getEnumFromString<T extends string>(enumArray: T[], str: string)
       return str as T;
   }
   return result;
+}
+
+export function filterSupports(arrays: { filter: ConnectedFilter<any[]>, array: any[] }[]): boolean {
+  if (globalConnection === 'and') {
+    return arrays.every(value => supports(value.filter, value.array));
+  } else {
+    return arrays.some(value => value.filter.filter.length > 0 && supports(value.filter, value.array)) ||
+        arrays.every(value => value.filter.filter.length === 0);
+  }
 }

@@ -6,6 +6,8 @@ import { QerFilterModel } from '../filter/qerFilter.model';
 import {NameRepository, Repository} from '../common/repository';
 import REPOSITORY_STATE from '../repository/repositoryModel';
 import {QuantumCloudService} from '../quantum-cloud-service/quantum-cloud-service.model';
+import {filterSupports} from '../filter/filter.service';
+import {ConnectedFilterModel} from '../filter/filter.model';
 
 
 
@@ -26,24 +28,30 @@ export class QuantumExecutionResourceService extends NameRepository<QuantumExecu
     return this.data;
   }
 
-  getFilteredQers(qerFilter: QerFilterModel): QuantumExecutionResource[] {
+  getFilteredQers(qerFilter: ConnectedFilterModel<QerFilterModel>): QuantumExecutionResource[] {
     return this.quantumExecutionResources.filter(value => this.isActive(value, qerFilter));
   }
 
-  isActive(qer: QuantumExecutionResource, filter: QerFilterModel): boolean {
-    if (filter.names.length > 0 && !filter.names.includes(qer)) {
-      return false;
-    }
-    if (filter.executionType.length > 0 && !filter.executionType.includes(qer.executionType)) {
-      return false;
-    }
-    if (filter.computationModels.length > 0 && !filter.computationModels.includes(qer.computationModel)) {
-      return false;
-    }
-    if (filter.vendors.length > 0 && !filter.vendors.includes(qer.vendor)) {
-      return false;
-    }
-    return true;
+  isActive(qer: QuantumExecutionResource, filter: ConnectedFilterModel<QerFilterModel>): boolean {
+    // if (filter.names.length > 0 && !filter.names.includes(qer)) {
+    //   return false;
+    // }
+    // if (filter.executionType.length > 0 && !filter.executionType.includes(qer.executionType)) {
+    //   return false;
+    // }
+    // if (filter.computationModels.length > 0 && !filter.computationModels.includes(qer.computationModel)) {
+    //   return false;
+    // }
+    // if (filter.vendors.length > 0 && !filter.vendors.includes(qer.vendor)) {
+    //   return false;
+    // }
+    // return true;
+    return filterSupports([
+      { filter: filter.names, array: [qer] },
+      { filter: filter.executionType, array: [qer.executionType] },
+      { filter: filter.computationModels, array: [qer.computationModel] },
+      { filter: filter.vendors, array: [qer.vendor] }
+    ]);
   }
 
 }

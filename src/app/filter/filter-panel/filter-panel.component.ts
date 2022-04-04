@@ -13,6 +13,7 @@ export class FilterPanelComponent implements OnInit, AfterViewInit {
   @Input() title: string;
   @Input() fields: FilterField[];
   andor: {[key: string]: 'and' | 'or'} = {};
+  private currentValue: {[key: string]: any[]} = {};
 
   @ViewChildren(MatSelect) selects: QueryList<MatSelect>;
 
@@ -27,10 +28,16 @@ export class FilterPanelComponent implements OnInit, AfterViewInit {
   }
 
   selectionChange(event: MatSelectChange, field: string): void {
-    this.filterService.updateSelectionField(field, event.value, 'form');
+    this.filterService.updateSelectionField(field, event.value, 'form', this.andor[field]);
   }
 
   onChange = (selectionChange: SelectionChange) => {
+    this.currentValue = {};
+
+    Object.keys(selectionChange.selection)
+        .filter(key => this.fields.map(field => field.field).includes(key))
+        .forEach(key => this.currentValue[key] = selectionChange.selection[key]);
+
     if (selectionChange.sourceOfChange === 'form') {
       return;
     }
@@ -56,6 +63,9 @@ export class FilterPanelComponent implements OnInit, AfterViewInit {
     switch (this.andor[field]) {
       case 'and': this.andor[field] = 'or'; break;
       case 'or': this.andor[field] = 'and'; break;
+    }
+    if (this.currentValue) {
+      this.filterService.updateSelectionField(field, this.currentValue[field], 'form', this.andor[field]);
     }
   }
 }
