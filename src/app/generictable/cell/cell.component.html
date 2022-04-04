@@ -10,7 +10,10 @@
 </ng-container>
 <ng-template #single>
     <ng-container *ngIf="isID; else primitive">
-        <a class="normal" (click)="openEntityDialog()">{{value}}</a>
+        <button mat-icon-button (click)="openEntityDialog()">
+            <mat-icon>info</mat-icon>
+        </button>
+        <app-item-badge color="#ECECEC" [value]="value"></app-item-badge>
     </ng-container>
     <ng-template #primitive>
         <ng-container *ngIf="isPrimitive(value); else reference">

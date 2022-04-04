@@ -48,7 +48,7 @@ export class FilterComponent implements OnInit {
   showCompilerTable = true;
   showOTable = true;
 
-  globalConnection: 'and' | 'or';
+  globalConnection: 'and' | 'or' = 'and';
 
   sdkFields: FilterField[] = [
     {label: 'SDKs', field: 'sdks', clear: this.filterService.clearSdks},
@@ -210,7 +210,7 @@ export class FilterComponent implements OnInit {
   }
 
   private qerIsSupportedByQcs(qcss: QuantumCloudService[], qer: QuantumExecutionResource): boolean {
-    const namesOfAllSupportedQers = [];
+    const namesOfAllSupportedQers: QuantumExecutionResource[] = [];
     qcss.forEach(qcs => {
       qcs.resources.forEach(value => {
         if (!namesOfAllSupportedQers.includes(value)) {
@@ -252,4 +252,10 @@ export class FilterComponent implements OnInit {
     this.filterService.setShowCompilerTable(this.showCompilerTable);
   }
 
+  changeGlobalConnection(): void {
+      switch (this.globalConnection) {
+          case 'and': this.globalConnection = 'or'; break;
+          case 'or': this.globalConnection = 'and'; break;
+      }
+  }
 }

@@ -41,7 +41,7 @@ export class CellComponent implements OnInit {
 
   public filterToReference(value: Entity): void {
     if (this.filterValue) {
-      this.filterService.updateSelectionField(this.filterValue, value);
+      this.filterService.toggleSelectionField(this.filterValue, value);
     }
   }
 

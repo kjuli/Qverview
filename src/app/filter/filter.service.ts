@@ -13,6 +13,7 @@ import {SdkService} from '../sdk/sdk.service';
 import {QuantumExecutionResourceService} from '../quantum-execution-resource/quantum-execution-resource.service';
 import {ProgrammingLanguageService} from '../programming-language/programming-language.service';
 import {CompilerService} from '../compiler/compiler.service';
+import {Entity} from '../common/repository';
 
 @Injectable({
   providedIn: 'root'
@@ -60,7 +61,17 @@ export class FilterService {
 
   public updateSelectionField(field: string, value: any, sourceOfChange?: string): void {
     this.selection[field] = value;
-    this.selectionSubject.next({selection: this.selection, sourceOfChange});
+    this.selectionSubject.next({ selection: this.selection, sourceOfChange });
+  }
+
+  public toggleSelectionField(field: string, value: Entity, sourceOfChange?: string): void {
+    const index = this.selection[field].indexOf(value);
+    if (index > -1) {
+      this.selection[field].splice(index, 1);
+    } else {
+      this.selection[field].push(value);
+    }
+    this.selectionSubject.next({ selection: this.selection, sourceOfChange });
   }
 
   setShowCompilerTable(showCompilerTable: boolean): void {

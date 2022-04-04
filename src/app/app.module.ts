@@ -45,6 +45,7 @@ import { FilterPanelComponent } from './filter/filter-panel/filter-panel.compone
 import {ReferencesService} from './references/references.service';
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import { ErrorDialogComponent } from './repository/error-dialog/error-dialog.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 export function initializeApp(appConfig: AppConfigService): () => Promise<void> {
   return () => appConfig.load();
@@ -97,6 +98,7 @@ export function initializeApp(appConfig: AppConfigService): () => Promise<void> 
         HttpClientModule,
         MatDialogModule,
         MatButtonToggleModule,
+        MatSlideToggleModule,
     ],
   providers: [
       AppConfigService,

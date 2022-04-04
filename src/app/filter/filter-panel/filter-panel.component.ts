@@ -12,14 +12,14 @@ export class FilterPanelComponent implements OnInit, AfterViewInit {
 
   @Input() title: string;
   @Input() fields: FilterField[];
-
-  localConnection: 'and' | 'or';
+  andor: {[key: string]: 'and' | 'or'} = {};
 
   @ViewChildren(MatSelect) selects: QueryList<MatSelect>;
 
   constructor(public filterService: FilterService) { }
 
   ngOnInit(): void {
+    this.fields.forEach(field => this.andor[field.field] = 'or');
   }
 
   ngAfterViewInit() {
@@ -50,6 +50,13 @@ export class FilterPanelComponent implements OnInit, AfterViewInit {
   clear(f: FilterField): void {
     const clearFunction = this.filterService.clear(f.field);
     clearFunction();
+  }
+
+  changeLocalConnection(field: string): void {
+    switch (this.andor[field]) {
+      case 'and': this.andor[field] = 'or'; break;
+      case 'or': this.andor[field] = 'and'; break;
+    }
   }
 }
 
