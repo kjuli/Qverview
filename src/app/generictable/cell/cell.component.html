@@ -1,7 +1,15 @@
 <ng-container *ngIf="isArray(value); else single">
     <ng-container *ngIf="value.length > 0; else emptyArray">
         <ng-container *ngFor="let singleCell of value">
-           <app-item-badge (click)="onClick(singleCell)" [color]="color" [value]="singleCell.toString()" [isUndefined]="singleCell.isUndefined"></app-item-badge>
+            <ng-container *ngIf="filterOrDialog === 'filter'; else dialog">
+                <app-item-badge (click)="onClick(singleCell)" [color]="color" [value]="singleCell.toString()" [isUndefined]="singleCell.isUndefined"></app-item-badge>
+            </ng-container>
+            <ng-template #dialog>
+                <button mat-icon-button (click)="onClick(singleCell)">
+                    <mat-icon>info</mat-icon>
+                </button>
+                <span style="border-bottom: 1px black dotted;">{{singleCell.toString()}}</span>
+            </ng-template>
         </ng-container>
     </ng-container>
     <ng-template #emptyArray>
@@ -13,7 +21,12 @@
         <button mat-icon-button (click)="openEntityDialog()">
             <mat-icon>info</mat-icon>
         </button>
-        <app-item-badge color="#ECECEC" [value]="value"></app-item-badge>
+        <ng-container *ngIf="filterOrDialog === 'filter'; else singleDialong">
+            <app-item-badge color="#ECECEC" [value]="value"></app-item-badge>
+        </ng-container>
+        <ng-template #singleDialog>
+            <span style="border-bottom: 1px black dotted;">{{value}}</span>
+        </ng-template>
     </ng-container>
     <ng-template #primitive>
         <ng-container *ngIf="isPrimitive(value); else reference">
@@ -21,6 +34,11 @@
         </ng-container>
     </ng-template>
     <ng-template #reference>
-        <app-item-badge (click)="onClick(value)" [color]="color" [value]="value.toString()" [isUndefined]="value.isUndefined"></app-item-badge>
+        <ng-container *ngIf="filterOrDialog === 'filter'; else singleDialogReference">
+            <app-item-badge (click)="onClick(value)" [color]="color" [value]="value.toString()" [isUndefined]="value.isUndefined"></app-item-badge>
+        </ng-container>
+        <ng-template #singleDialogReference>
+            <app-item-badge color="#ECECEC" [value]="value"></app-item-badge>
+        </ng-template>
     </ng-template>
 </ng-template>
