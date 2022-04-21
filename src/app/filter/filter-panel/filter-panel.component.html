@@ -13,7 +13,7 @@
                     <mat-option *ngFor="let option of filterService.centralData[f.field]" [value]="option">{{option}}</mat-option>
                 </mat-select>
             </mat-form-field>
-            <button mat-button (click)="changeLocalConnection(f.field)" style="width: 73px;">
+            <button *ngIf="f.showAndOr === undefined || f.showAndOr" mat-button (click)="changeLocalConnection(f.field)" style="width: 73px;">
                 {{andor[f.field].toUpperCase()}}
             </button>
             <button mat-icon-button class="clear-button" (click)="clear(f)">

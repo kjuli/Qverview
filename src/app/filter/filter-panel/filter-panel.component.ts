@@ -74,4 +74,5 @@ export interface FilterField {
   label: string;
   field: string;
   clear?: () => void;
+  showAndOr?: boolean;
 }

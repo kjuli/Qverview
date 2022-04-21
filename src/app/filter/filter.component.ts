@@ -51,35 +51,35 @@ export class FilterComponent implements OnInit {
   globalConnection: 'and' | 'or' = 'and';
 
   sdkFields: FilterField[] = [
-    {label: 'SDKs', field: 'sdks', clear: this.filterService.clearSdks},
+    {label: 'SDKs', field: 'sdks', clear: this.filterService.clearSdks, showAndOr: false},
     {label: 'Licenses', field: 'licenses', clear: this.filterService.clearLicenses},
     {label: 'Programming Languages', field: 'programmingLanguages'},
   ];
   qcsFields: FilterField[] = [
-    {label: 'Quantum Cloud Services', field: 'quantumCloudServices', clear: () => this.filterService.clearQcs()},
+    {label: 'Quantum Cloud Services', field: 'quantumCloudServices', clear: () => this.filterService.clearQcs(), showAndOr: false},
     {label: 'Access Methods', field: 'accessMethods', clear: () => this.filterService.clearAccessMethods()},
     {label: 'Service Model', field: 'serviceModels', clear: () => this.filterService.clearServiceModels()},
     {label: 'Assembly Language', field: 'assemblyLanguages', clear: () => this.filterService.clearAssemlbyLanguages()}
   ];
   qerFields: FilterField[] = [
-      {label: 'Quantum Execution Resource', field: 'quantumExecutionResources', clear: () => this.filterService.clearQer()},
+      {label: 'Quantum Execution Resource', field: 'quantumExecutionResources', clear: () => this.filterService.clearQer(), showAndOr: false},
       {label: 'Execution Type', field: 'executionTypes', clear: () => this.filterService.clearExecutionType()},
       {label: 'Computation Models', field: 'computationModels', clear: () => this.filterService.clearComputationModel()},
       {label: 'Vendors', field: 'vendors', clear: () => this.filterService.clearVendor()}
   ];
   qplFields: FilterField[] = [
-      {label: 'Type', field: 'qplTypes', clear: () => this.filterService.clearQplTypes()},
+      {label: 'Type', field: 'qplTypes', clear: () => this.filterService.clearQplTypes(), showAndOr: false},
       {label: 'Syntax Implementation', field: 'qplSyntaxImplementations', clear: () => this.filterService.clearQplSyntaxImplementations()},
       {label: 'Standardization', field: 'qplStandardization', clear: () => {}}
   ];
   compilerFields: FilterField[] = [
-      {label: 'Compiler', field: 'compilers', clear: () => this.filterService.clearCompilers()},
+      {label: 'Compiler', field: 'compilers', clear: () => this.filterService.clearCompilers(), showAndOr: false},
       {label: 'Input Languages', field: 'compilerInputLanguages', clear: () => this.filterService.clearCompilerInputLanguages()},
       {label: 'Output Languages', field: 'compilerOutputLanguages', clear: () => this.filterService.clearCompilerOutputLanguages()},
       {label: 'Optimization Strategies', field: 'compilerOptimizationStrategies', clear: () => this.filterService.clearCompilerOptimizationStrategies()}
   ];
   orchestratorFields: FilterField[] = [
-      {label: 'Orchestrator', field: 'orchestrators', clear: this.filterService.clearOrchestrators},
+      {label: 'Orchestrator', field: 'orchestrators', clear: this.filterService.clearOrchestrators, showAndOr: false},
       {label: 'Licenses', field: 'orchestratorLicenses', clear: this.filterService.clearOrchestratorLicenses},
       {label: 'Languages', field: 'orchestratorProgrammingLanguages', clear: this.filterService.clearOrchestratorLanguages},
   ];
